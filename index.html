@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>선김치 행사 프로모션 캘린더</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f7f7f5;min-height:100vh;padding:1.5rem}
+.container{max-width:1100px;margin:0 auto;background:#fff;border-radius:16px;padding:1.5rem;box-shadow:0 2px 12px rgba(0,0,0,0.07)}
+.topbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:0.875rem}
+.topbar h1{font-size:18px;font-weight:600;color:#111;flex:1}
+.btn-add{font-size:13px;padding:7px 16px;border:1px solid #534AB7;border-radius:8px;background:#534AB7;color:#CECBF6;cursor:pointer}
+.btn-add:hover{background:#3C3489}
+.cal-nav{display:flex;align-items:center;gap:6px}
+.cal-nav-label{font-size:15px;font-weight:600;color:#111;min-width:100px;text-align:center}
+.nav-btn{font-size:13px;padding:5px 11px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#111;cursor:pointer}
+.nav-btn:hover{background:#f5f5f3}
+.sync-bar{display:flex;align-items:center;gap:8px;margin-bottom:0.75rem;font-size:12px;color:#888}
+.sync-dot{width:8px;height:8px;border-radius:50%;background:#ccc;display:inline-block;flex-shrink:0}
+.sync-dot.ok{background:#3B6D11}
+.sync-dot.err{background:#E24B4A}
+.sync-dot.loading{background:#BA7517;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.btn-sync{font-size:12px;padding:3px 10px;border:1px solid #ddd;border-radius:6px;background:#fff;color:#555;cursor:pointer}
+.search-bar{display:flex;align-items:center;gap:8px;margin-bottom:0.75rem}
+.search-wrap{position:relative;flex:1;max-width:360px}
+.search-wrap input{width:100%;font-size:13px;padding:7px 30px 7px 32px;border:1px solid #ddd;border-radius:8px;outline:none}
+.search-wrap input:focus{border-color:#534AB7}
+.si{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:14px;color:#aaa;pointer-events:none}
+.scl{position:absolute;right:9px;top:50%;transform:translateY(-50%);font-size:17px;color:#aaa;cursor:pointer;background:none;border:none;display:none;line-height:1;padding:0}
+.s-count{font-size:12px;color:#888}
+.sr-panel{background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:1rem;margin-bottom:0.875rem;display:none}
+.sr-title{font-size:13px;color:#666;margin-bottom:0.625rem;font-weight:500}
+.sr-empty{font-size:13px;color:#999;text-align:center;padding:1.25rem 0}
+.sr-item{border:1px solid #eee;border-radius:8px;padding:0.625rem 0.875rem;margin-bottom:6px}
+.sr-item:last-child{margin-bottom:0}
+.sr-top{display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap}
+.sr-name{font-size:13px;font-weight:600;color:#111}
+.sr-date{font-size:12px;color:#999}
+.sr-hl{background:#FAEEDA;color:#633806;border-radius:2px;padding:0 2px}
+.sr-tbl{width:100%;border-collapse:collapse;font-size:12px;margin-top:4px}
+.sr-tbl th{color:#999;font-weight:400;text-align:left;padding:3px 8px 3px 0;border-bottom:1px solid #eee}
+.sr-tbl td{padding:4px 8px 4px 0;border-bottom:1px solid #eee;color:#111}
+.sr-tbl tr:last-child td{border:none}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:0.75rem}
+.pill{font-size:12px;padding:4px 12px;border:1px solid #ddd;border-radius:20px;background:#fff;color:#666;cursor:pointer}
+.pill:hover{background:#f5f5f3}
+.pill.on{font-weight:600}
+.pa.on{background:#EEEDFE;color:#3C3489;border-color:#534AB7}
+.pn.on{background:#E6F1FB;color:#0C447C;border-color:#378ADD}
+.ps.on{background:#EAF3DE;color:#27500A;border-color:#639922}
+.pc.on{background:#FAECE7;color:#712B13;border-color:#D85A30}
+.pk.on{background:#FAEEDA;color:#633806;border-color:#BA7517}
+.pe.on{background:#F1EFE8;color:#444;border-color:#888}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1rem}
+.metric{background:#f7f7f5;border-radius:10px;padding:0.75rem 1rem}
+.metric .lb{font-size:11px;color:#999;margin-bottom:3px}
+.metric .val{font-size:22px;font-weight:600;color:#111}
+.cal-outer{border:1px solid #e0e0e0;border-radius:12px;overflow:hidden}
+.cal-head-row{display:grid;grid-template-columns:repeat(7,1fr);background:#f7f7f5;border-bottom:1px solid #e0e0e0}
+.ch{font-size:12px;color:#999;text-align:center;padding:8px 0;font-weight:500}
+.week-wrap{position:relative;border-bottom:1px solid #e0e0e0}
+.week-wrap:last-child{border-bottom:none}
+.week-cells{display:grid;grid-template-columns:repeat(7,1fr)}
+.day-cell{border-right:1px solid #e0e0e0;padding:4px 3px 5px 4px;background:#fff}
+.day-cell:last-child{border-right:none}
+.day-cell.other{background:#fafafa}
+.day-cell.sun .dn{color:#E24B4A}
+.dn{font-size:12px;color:#999;display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%}
+.day-cell.today .dn{background:#534AB7;color:#fff;font-weight:600}
+.bars-layer{position:absolute;top:0;left:0;right:0;pointer-events:none}
+.bar-slot{position:relative;height:30px;pointer-events:none}
+.bar-slot:first-child{margin-top:29px}
+.bar-slot+.bar-slot{margin-top:2px}
+.ebar{position:absolute;height:28px;border-radius:4px;padding:1px 6px;cursor:pointer;overflow:hidden;pointer-events:auto;display:flex;flex-direction:column;justify-content:center;transition:opacity 0.15s}
+.ebar:hover{filter:brightness(0.95)}
+.ebar.dimmed{opacity:0.18}
+.en{font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.4}
+.ep{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;opacity:0.85}
+.cn{background:#E6F1FB;color:#0C447C}
+.cs{background:#EAF3DE;color:#27500A}
+.cc{background:#FAECE7;color:#712B13}
+.ck{background:#FAEEDA;color:#633806}
+.ce{background:#F1EFE8;color:#444}
+.loading-cal{text-align:center;padding:4rem;color:#aaa;font-size:14px}
+/* 팝업 */
+.pop{position:fixed;z-index:300;background:#fff;border:1px solid #ddd;border-radius:14px;padding:1.1rem;width:272px;display:none;box-shadow:0 6px 24px rgba(0,0,0,0.12)}
+.pop-plat{font-size:11px;padding:2px 9px;border-radius:20px;display:inline-block;margin-bottom:7px;font-weight:500}
+.pop-name{font-size:14px;font-weight:600;color:#111;margin-bottom:3px}
+.pop-date{font-size:12px;color:#999;margin-bottom:9px}
+.pop-tbl{width:100%;font-size:12px;border-collapse:collapse}
+.pop-tbl th{color:#999;font-weight:400;text-align:left;padding:2px 0;border-bottom:1px solid #eee}
+.pop-tbl td{padding:4px 0;border-bottom:1px solid #eee;color:#111}
+.pop-tbl tr:last-child td{border:none}
+.pop-memo{font-size:11px;color:#aaa;margin-top:9px}
+.pop-actions{display:flex;gap:6px;margin-top:11px}
+.pop-edit{font-size:12px;padding:5px 12px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#111;cursor:pointer}
+.pop-close{font-size:12px;padding:5px 12px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#999;cursor:pointer;margin-left:auto}
+/* 모달 */
+.mbg{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;align-items:center;justify-content:center;z-index:200}
+.mbg.open{display:flex}
+.modal{background:#fff;border-radius:14px;padding:1.5rem;width:min(500px,94vw);max-height:88vh;overflow-y:auto}
+.modal h2{font-size:16px;font-weight:600;margin-bottom:1rem;color:#111}
+.frow{margin-bottom:0.875rem}
+.frow label{font-size:12px;color:#888;display:block;margin-bottom:4px;font-weight:500}
+.frow input,.frow select,.frow textarea{width:100%;font-size:13px;padding:7px 10px;border:1px solid #ddd;border-radius:8px;outline:none}
+.frow input:focus,.frow select:focus,.frow textarea:focus{border-color:#534AB7}
+.frow textarea{height:56px;resize:vertical}
+.dg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pw{border:1px solid #ddd;border-radius:8px;padding:10px}
+.ph{display:grid;grid-template-columns:1fr 82px 82px 26px;gap:6px;margin-bottom:5px}
+.ph span{font-size:11px;color:#aaa;font-weight:500}
+.pr{display:grid;grid-template-columns:1fr 82px 82px 26px;gap:6px;margin-bottom:6px;align-items:center}
+.pr input{font-size:12px;padding:5px 7px;border:1px solid #ddd;border-radius:6px}
+.ap{font-size:12px;color:#534AB7;background:none;border:none;cursor:pointer;padding:2px 0;font-weight:500}
+.mbtns{display:flex;gap:8px;justify-content:flex-end;margin-top:1rem}
+.bcl{font-size:13px;padding:7px 16px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#888;cursor:pointer}
+.bsv{font-size:13px;padding:7px 16px;border:1px solid #534AB7;border-radius:8px;background:#534AB7;color:#CECBF6;cursor:pointer}
+.bsv:hover{background:#3C3489}
+.bdl{font-size:13px;padding:7px 16px;border:1px solid #E24B4A;border-radius:8px;background:#fff;color:#E24B4A;cursor:pointer;margin-right:auto}
+@media(max-width:600px){
+  body{padding:0.75rem}
+  .metrics{grid-template-columns:repeat(2,1fr)}
+  .topbar h1{font-size:15px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="topbar">
+  <h1>🥬 선김치 행사 프로모션 캘린더</h1>
+  <div class="cal-nav">
+    <button class="nav-btn" onclick="navM(-1)">&#8592;</button>
+    <span class="cal-nav-label" id="mlabel"></span>
+    <button class="nav-btn" onclick="navM(1)">&#8594;</button>
+  </div>
+  <button class="btn-add" onclick="openModal()">+ 행사 등록</button>
+</div>
+
+<div class="sync-bar">
+  <span class="sync-dot loading" id="sdot"></span>
+  <span id="smsg">Google Sheets 연결 중...</span>
+  <button class="btn-sync" onclick="loadFromSheets()">&#8635; 새로고침</button>
+</div>
+
+<div class="search-bar">
+  <div class="search-wrap">
+    <span class="si">🔍</span>
+    <input type="text" id="sq" placeholder="행사명 또는 상품명 검색..." oninput="doSearch(this.value)">
+    <button class="scl" id="scl" onclick="clearSrch()">&#215;</button>
+  </div>
+  <span class="s-count" id="scnt"></span>
+</div>
+<div class="sr-panel" id="srp">
+  <div class="sr-title" id="srt"></div>
+  <div id="srl"></div>
+</div>
+
+<div class="filters">
+  <button class="pill pa on" onclick="setP(this,'all')">전체</button>
+  <button class="pill pn" onclick="setP(this,'naver')">네이버</button>
+  <button class="pill ps" onclick="setP(this,'sun')">선김치몰</button>
+  <button class="pill pc" onclick="setP(this,'coupang')">쿠팡</button>
+  <button class="pill pk" onclick="setP(this,'kakao')">카카오쇼핑</button>
+  <button class="pill pe" onclick="setP(this,'etc')">기타</button>
+</div>
+
+<div class="metrics" id="metrics"></div>
+
+<div class="cal-outer">
+  <div class="cal-head-row">
+    <div class="ch" style="color:#E24B4A">일</div>
+    <div class="ch">월</div><div class="ch">화</div><div class="ch">수</div>
+    <div class="ch">목</div><div class="ch">금</div><div class="ch">토</div>
+  </div>
+  <div id="calbody"><div class="loading-cal">⏳ 데이터 불러오는 중...</div></div>
+</div>
+</div>
+
+<!-- 팝업 -->
+<div class="pop" id="pop">
+  <div id="pop-inner"></div>
+  <div class="pop-actions">
+    <button class="pop-edit" id="pop-edit">편집</button>
+    <button class="pop-close" onclick="closePop()">닫기</button>
+  </div>
+</div>
+
+<!-- 모달 -->
+<div class="mbg" id="mbg" onclick="if(event.target===this)closeModal()">
+<div class="modal">
+  <h2 id="mtitle">행사 등록</h2>
+  <div class="frow"><label>행사명</label><input type="text" id="fn" placeholder="예) 어버이날 기획전"></div>
+  <div class="frow"><label>플랫폼</label>
+    <select id="fp">
+      <option value="naver">네이버 스마트스토어</option>
+      <option value="sun">선김치몰</option>
+      <option value="coupang">쿠팡</option>
+      <option value="kakao">카카오쇼핑</option>
+      <option value="etc">기타</option>
+    </select>
+  </div>
+  <div class="frow dg">
+    <div><label>시작일</label><input type="date" id="fst"></div>
+    <div><label>종료일</label><input type="date" id="fen"></div>
+  </div>
+  <div class="frow"><label>행사 상품</label>
+    <div class="pw">
+      <div class="ph"><span>상품명</span><span>정가</span><span>행사가</span><span></span></div>
+      <div id="prows"></div>
+      <button class="ap" onclick="addProd()">+ 상품 추가</button>
+    </div>
+  </div>
+  <div class="frow"><label>메모</label><textarea id="fm" placeholder="특이사항, 담당자 등"></textarea></div>
+  <div class="mbtns">
+    <button class="bdl" id="bdl" style="display:none" onclick="delEv()">삭제</button>
+    <button class="bcl" onclick="closeModal()">취소</button>
+    <button class="bsv" onclick="saveEv()">저장</button>
+  </div>
+</div>
+</div>
+
+<script>
+const GAS_URL='https://script.google.com/macros/s/AKfycbxAW-hsytkEi11EDac-oHZV5_KEVIwpMnI7tpDd4uPyjbHVq1MGR37RctU8cMxcoiYMOA/exec';
+const PL={naver:'네이버',sun:'선김치몰',coupang:'쿠팡',kakao:'카카오쇼핑',etc:'기타'};
+const PCL={naver:'cn',sun:'cs',coupang:'cc',kakao:'ck',etc:'ce'};
+const PBG={naver:'#E6F1FB',sun:'#EAF3DE',coupang:'#FAECE7',kakao:'#FAEEDA',etc:'#F1EFE8'};
+const PTC={naver:'#0C447C',sun:'#27500A',coupang:'#712B13',kakao:'#633806',etc:'#444'};
+
+let evs=[],curP='all',curY=new Date().getFullYear(),curM=new Date().getMonth(),editId=null,srchQ='',srchIds=new Set();
+
+function setSyncStatus(state,msg){
+  document.getElementById('sdot').className='sync-dot '+state;
+  document.getElementById('smsg').textContent=msg;
+}
+async function loadFromSheets(){
+  setSyncStatus('loading','Google Sheets에서 불러오는 중...');
+  try{
+    const res=await fetch(GAS_URL+'?t='+Date.now());
+    const json=await res.json();
+    if(json.ok){
+      evs=json.data.map(e=>({...e,id:Number(e.id)||e.id,products:Array.isArray(e.products)?e.products:[]}));
+      const now=new Date();
+      setSyncStatus('ok','연동 완료 · '+now.getHours()+':'+String(now.getMinutes()).padStart(2,'0')+' 기준');
+      render();
+    } else throw new Error();
+  } catch{
+    setSyncStatus('err','연결 실패 — 새로고침을 눌러주세요');
+    render();
+  }
+}
+async function postToSheets(action,event){
+  const res=await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action,event})});
+  return res.json();
+}
+
+function hl(t,q){
+  if(!q)return t;
+  return t.replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<span class="sr-hl">$1</span>');
+}
+function doSearch(v){
+  srchQ=v.trim();
+  document.getElementById('scl').style.display=srchQ?'block':'none';
+  if(!srchQ){srchIds=new Set();document.getElementById('srp').style.display='none';document.getElementById('scnt').textContent='';renderCal();return;}
+  const q=srchQ.toLowerCase();
+  const found=evs.filter(e=>e.name.toLowerCase().includes(q)||e.products.some(p=>p.name.toLowerCase().includes(q))).sort((a,b)=>a.start.localeCompare(b.start));
+  srchIds=new Set(found.map(e=>e.id));
+  document.getElementById('scnt').textContent=found.length+'건';
+  document.getElementById('srt').textContent='"'+srchQ+'" 검색 결과 — '+found.length+'건 (날짜순)';
+  document.getElementById('srp').style.display='block';
+  if(!found.length){document.getElementById('srl').innerHTML='<div class="sr-empty">검색 결과가 없습니다.</div>';renderCal();return;}
+  document.getElementById('srl').innerHTML=found.map(e=>{
+    const badge=`<span style="font-size:11px;padding:2px 8px;border-radius:20px;background:${PBG[e.plat]};color:${PTC[e.plat]};font-weight:500">${PL[e.plat]}</span>`;
+    const rows=e.products.map(p=>{const d=p.orig?Math.round((1-p.sale/p.orig)*100):0;return`<tr><td>${hl(p.name,srchQ)}</td><td style="text-decoration:line-through;color:#bbb">${fmt(p.orig)}</td><td style="color:#993C1D;font-weight:600">${fmt(p.sale)}</td><td style="color:#993C1D;font-size:11px">${d?d+'%':''}</td></tr>`;}).join('');
+    return`<div class="sr-item"><div class="sr-top">${badge}<span class="sr-name">${hl(e.name,srchQ)}</span><span class="sr-date">${e.start} ~ ${e.end}</span></div><table class="sr-tbl"><tr><th>상품명</th><th>정가</th><th>행사가</th><th>할인율</th></tr>${rows}</table></div>`;
+  }).join('');
+  renderCal();
+}
+function clearSrch(){document.getElementById('sq').value='';doSearch('');}
+
+function fmt(n){return Number(n).toLocaleString()+'원'}
+function pad(n){return String(n).padStart(2,'0')}
+function dstr(y,m,d){return y+'-'+pad(m+1)+'-'+pad(d)}
+function today(){const d=new Date();return dstr(d.getFullYear(),d.getMonth(),d.getDate())}
+function filt(){return curP==='all'?evs:evs.filter(e=>e.plat===curP)}
+function setP(el,p){document.querySelectorAll('.pill').forEach(x=>x.classList.remove('on'));el.classList.add('on');curP=p;render();}
+function navM(d){curM+=d;if(curM<0){curM=11;curY--;}if(curM>11){curM=0;curY++;}render();}
+
+function renderMetrics(){
+  const ev=filt(),t=today();
+  const a=ev.filter(e=>e.start<=t&&t<=e.end).length;
+  const u=ev.filter(e=>e.start>t).length;
+  const en=ev.filter(e=>e.end<t).length;
+  document.getElementById('metrics').innerHTML=`
+    <div class="metric"><div class="lb">전체 행사</div><div class="val">${ev.length}</div></div>
+    <div class="metric"><div class="lb">진행중</div><div class="val" style="color:#3B6D11">${a}</div></div>
+    <div class="metric"><div class="lb">예정</div><div class="val" style="color:#185FA5">${u}</div></div>
+    <div class="metric"><div class="lb">종료</div><div class="val" style="color:#aaa">${en}</div></div>`;
+}
+function render(){
+  document.getElementById('mlabel').textContent=curY+'년 '+(curM+1)+'월';
+  renderMetrics();
+  renderCal();
+}
+function renderCal(){
+  const firstDay=new Date(curY,curM,1).getDay();
+  const dim=new Date(curY,curM+1,0).getDate();
+  const pdim=new Date(curY,curM,0).getDate();
+  const t=today();const ev=filt();
+  const cells=[];
+  for(let i=firstDay-1;i>=0;i--){const pm=curM===0?11:curM-1,py=curM===0?curY-1:curY;cells.push({y:py,m:pm,d:pdim-i,other:true});}
+  for(let d=1;d<=dim;d++)cells.push({y:curY,m:curM,d,other:false});
+  while(cells.length%7!==0){const nm=curM===11?0:curM+1,ny=curM===11?curY+1:curY;cells.push({y:ny,m:nm,d:cells.length-firstDay-dim+1,other:true});}
+  let html='';
+  for(let w=0;w<cells.length/7;w++){
+    const week=cells.slice(w*7,w*7+7);
+    const wS=dstr(week[0].y,week[0].m,week[0].d);
+    const wE=dstr(week[6].y,week[6].m,week[6].d);
+    const wev=ev.filter(e=>e.start<=wE&&e.end>=wS).sort((a,b)=>a.start.localeCompare(b.start)||(a.end<b.end?1:-1));
+    const placed=[];
+    wev.forEach(e=>{
+      let sc=0,ec=6;
+      week.forEach((c,ci)=>{const s=dstr(c.y,c.m,c.d);if(s===e.start)sc=ci;if(s===e.end)ec=ci;});
+      if(e.start<wS)sc=0;if(e.end>wE)ec=6;
+      sc=Math.max(0,sc);ec=Math.min(6,ec);
+      let slot=0;
+      while(placed.some(p=>p.slot===slot&&!(p.ec<sc||p.sc>ec)))slot++;
+      placed.push({e,sc,ec,slot});
+    });
+    const maxSlot=placed.length?Math.max(...placed.map(p=>p.slot)):-1;
+    const cellH=Math.max(72,29+(maxSlot+1)*32+6);
+    html+=`<div class="week-wrap"><div class="week-cells">`;
+    week.forEach((c,ci)=>{
+      const s=dstr(c.y,c.m,c.d);
+      html+=`<div class="day-cell${c.other?' other':''}${s===t?' today':''}${ci===0?' sun':''}" style="min-height:${cellH}px"><div class="dn">${c.d}</div></div>`;
+    });
+    html+=`</div><div class="bars-layer">`;
+    for(let sl=0;sl<=maxSlot;sl++){
+      html+=`<div class="bar-slot" style="${sl===0?'margin-top:29px':'margin-top:2px'}">`;
+      placed.filter(p=>p.slot===sl).forEach(({e,sc,ec})=>{
+        const isStart=e.start>=wS&&dstr(week[sc].y,week[sc].m,week[sc].d)===e.start;
+        const isEnd=e.end<=wE;
+        const rL=isStart?'4px':'0';const rR=isEnd?'4px':'0';
+        const W=((ec-sc+1)/7*100).toFixed(2);const L=(sc/7*100).toFixed(2);
+        const dimmed=srchQ&&!srchIds.has(e.id)?'dimmed':'';
+        const pt=e.products.map(p=>p.name+' '+fmt(p.sale)).join(' · ');
+        const eid=JSON.stringify(String(e.id));
+        html+=`<div class="ebar ${PCL[e.plat]} ${dimmed}" style="left:calc(${L}% + 1px);width:calc(${W}% - 3px);border-radius:${rL} ${rR} ${rR} ${rL}" onclick="showPop(event,${eid})">
+          <span class="en">${e.name}</span><span class="ep">${pt}</span>
+        </div>`;
+      });
+      html+=`</div>`;
+    }
+    html+=`</div></div>`;
+  }
+  document.getElementById('calbody').innerHTML=html;
+}
+function showPop(ev,id){
+  closePop();
+  const e=evs.find(v=>String(v.id)===String(id));if(!e)return;
+  const rows=e.products.map(p=>{const d=p.orig?Math.round((1-p.sale/p.orig)*100):0;return`<tr><td>${p.name}</td><td style="text-decoration:line-through;color:#bbb">${fmt(p.orig)}</td><td style="color:#993C1D;font-weight:600">${fmt(p.sale)}</td><td style="color:#993C1D;font-size:11px">${d?d+'%':''}</td></tr>`;}).join('');
+  document.getElementById('pop-inner').innerHTML=`
+    <div class="pop-plat" style="background:${PBG[e.plat]};color:${PTC[e.plat]}">${PL[e.plat]}</div>
+    <div class="pop-name">${e.name}</div>
+    <div class="pop-date">${e.start} ~ ${e.end}</div>
+    <table class="pop-tbl"><tr><th>상품</th><th>정가</th><th>행사가</th><th>할인</th></tr>${rows}</table>
+    ${e.memo?`<div class="pop-memo">📌 ${e.memo}</div>`:''}`;
+  document.getElementById('pop-edit').onclick=()=>{closePop();openModal(id);};
+  const pop=document.getElementById('pop');pop.style.display='block';
+  const r=ev.currentTarget.getBoundingClientRect();
+  let top=r.bottom+window.scrollY+8,left=r.left+window.scrollX;
+  if(left+280>window.innerWidth)left=window.innerWidth-284;
+  pop.style.top=top+'px';pop.style.left=Math.max(8,left)+'px';
+  setTimeout(()=>document.addEventListener('click',outPop),0);
+}
+function outPop(e){if(!document.getElementById('pop').contains(e.target))closePop();}
+function closePop(){document.getElementById('pop').style.display='none';document.removeEventListener('click',outPop);}
+function openModal(id){
+  editId=id||null;
+  document.getElementById('mtitle').textContent=id?'행사 수정':'행사 등록';
+  document.getElementById('bdl').style.display=id?'block':'none';
+  document.getElementById('prows').innerHTML='';
+  if(id){
+    const e=evs.find(v=>String(v.id)===String(id));
+    document.getElementById('fn').value=e.name;
+    document.getElementById('fp').value=e.plat;
+    document.getElementById('fst').value=e.start;
+    document.getElementById('fen').value=e.end;
+    document.getElementById('fm').value=e.memo||'';
+    e.products.forEach(p=>addProd(p.name,p.orig,p.sale));
+  } else {
+    ['fn','fm'].forEach(i=>document.getElementById(i).value='');
+    document.getElementById('fp').value='naver';
+    document.getElementById('fst').value='';document.getElementById('fen').value='';
+    addProd();
+  }
+  document.getElementById('mbg').classList.add('open');
+}
+function closeModal(){document.getElementById('mbg').classList.remove('open');}
+function addProd(name='',orig='',sale=''){
+  const d=document.createElement('div');d.className='pr';
+  d.innerHTML=`<input type="text" placeholder="상품명" value="${name}" class="pn"><input type="number" placeholder="정가" value="${orig||''}" class="po"><input type="number" placeholder="행사가" value="${sale||''}" class="ps"><button style="background:none;border:none;cursor:pointer;color:#E24B4A;font-size:16px;line-height:1;padding:0" onclick="this.parentNode.remove()">×</button>`;
+  document.getElementById('prows').appendChild(d);
+}
+async function saveEv(){
+  const name=document.getElementById('fn').value.trim();
+  const plat=document.getElementById('fp').value;
+  const start=document.getElementById('fst').value;
+  const end=document.getElementById('fen').value;
+  const memo=document.getElementById('fm').value.trim();
+  if(!name||!start||!end){alert('행사명, 시작일, 종료일을 입력해주세요.');return;}
+  const products=[];
+  document.querySelectorAll('#prows .pr').forEach(r=>{
+    const nm=r.querySelector('.pn').value.trim();
+    const or=Number(r.querySelector('.po').value)||0;
+    const sl=Number(r.querySelector('.ps').value)||0;
+    if(nm)products.push({name:nm,orig:or,sale:sl});
+  });
+  const ev={name,plat,start,end,products,memo};
+  closeModal();setSyncStatus('loading','저장 중...');
+  try{
+    if(editId){ev.id=editId;await postToSheets('update',ev);}
+    else await postToSheets('add',ev);
+    await loadFromSheets();
+  } catch{setSyncStatus('err','저장 실패 — 네트워크를 확인해주세요');}
+}
+async function delEv(){
+  if(!confirm('이 행사를 삭제할까요?'))return;
+  closeModal();setSyncStatus('loading','삭제 중...');
+  try{await postToSheets('delete',{id:editId});await loadFromSheets();}
+  catch{setSyncStatus('err','삭제 실패');}
+}
+loadFromSheets();
+</script>
+</body>
+</html>
