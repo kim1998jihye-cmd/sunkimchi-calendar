@@ -467,8 +467,9 @@ function renderCal(){
         const W=((ec-sc+1)/7*100).toFixed(2);const L=(sc/7*100).toFixed(2);
         const dimmed=srchQ&&!srchIds.has(e.id)?'dimmed':'';
         const pt=e.products.map(p=>p.name+' '+fmt(p.sale)).join(' · ');
+        const displayName=`[${pl.name}] ${e.name}`;
         html+=`<div class="ebar ${dimmed}" style="left:calc(${L}% + 1px);width:calc(${W}% - 3px);border-radius:${rL} ${rR} ${rR} ${rL};background:${pl.bg};color:${pl.tc}" onclick="showPop(event,${JSON.stringify(String(e.id))})">
-          <span class="en">${e.name}</span><span class="ep">${pt}</span>
+          <span class="en">${displayName}</span><span class="ep">${pt}</span>
         </div>`;
       });
       html+=`</div>`;
