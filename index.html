@@ -473,7 +473,16 @@ function doSearch(v){
   document.getElementById('srl').innerHTML=found.map(e=>{
     const pl=platById(e.plat);
     const badge=`<span style="font-size:11px;padding:2px 8px;border-radius:20px;background:${pl.bg};color:${pl.tc};font-weight:500">${pl.name}</span>`;
-    const rows=e.products.map(p=>{const d=p.orig?Math.round((1-p.sale/p.orig)*100):0;return`<tr><td>${hl(p.name,srchQ)}</td><td style="text-decoration:line-through;color:#bbb">${fmt(p.orig)}</td><td style="color:#993C1D;font-weight:600">${fmt(p.sale)}</td><td style="color:#993C1D;font-size:11px">${d?d+'%':''}</td></tr>`;}).join('');
+    const q=srchQ.toLowerCase();
+    const nameMatch=e.name.toLowerCase().includes(q);
+    // 행사명 검색일 때는 전체 상품, 상품명 검색일 때는 매칭 상품만
+    const visibleProds=nameMatch
+      ? e.products
+      : e.products.filter(p=>p.name.toLowerCase().includes(q));
+    const rows=visibleProds.map(p=>{
+      const d=p.orig?Math.round((1-p.sale/p.orig)*100):0;
+      return`<tr><td>${hl(p.name,srchQ)}</td><td style="text-decoration:line-through;color:#bbb">${fmt(p.orig)}</td><td style="color:#993C1D;font-weight:600">${fmt(p.sale)}</td><td style="color:#993C1D;font-size:11px">${d?d+'%':''}</td></tr>`;
+    }).join('');
     return`<div class="sr-item"><div class="sr-top">${badge}<span class="sr-name">${hl(e.name,srchQ)}</span><span class="sr-date">${e.start} ~ ${e.end}</span></div><table class="sr-tbl"><tr><th>상품명</th><th>정가</th><th>행사가</th><th>할인율</th></tr>${rows}</table></div>`;
   }).join('');
   renderCal();
