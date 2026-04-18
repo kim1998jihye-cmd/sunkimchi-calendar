@@ -20,8 +20,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .nav-btn:hover{background:#f5f5f3}
 .sync-bar{display:flex;align-items:center;gap:8px;margin-bottom:0.75rem;font-size:12px;color:#888}
 .sync-dot{width:8px;height:8px;border-radius:50%;background:#ccc;display:inline-block;flex-shrink:0}
-.sync-dot.ok{background:#3B6D11}
-.sync-dot.err{background:#E24B4A}
+.sync-dot.ok{background:#3B6D11}.sync-dot.err{background:#E24B4A}
 .sync-dot.loading{background:#BA7517;animation:pulse 1s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
 .btn-sync{font-size:12px;padding:3px 10px;border:1px solid #ddd;border-radius:6px;background:#fff;color:#555;cursor:pointer}
@@ -48,7 +47,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:0.75rem}
 .pill{font-size:12px;padding:4px 12px;border:1px solid #ddd;border-radius:20px;background:#fff;color:#666;cursor:pointer}
 .pill:hover{background:#f5f5f3}
-.pill.on{font-weight:600;border-color:currentColor}
+.pill.on{font-weight:600}
 .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1rem}
 .metric{background:#f7f7f5;border-radius:10px;padding:0.75rem 1rem}
 .metric .lb{font-size:11px;color:#999;margin-bottom:3px}
@@ -70,37 +69,37 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .bar-slot:first-child{margin-top:29px}
 .bar-slot+.bar-slot{margin-top:2px}
 .ebar{position:absolute;height:28px;border-radius:4px;padding:1px 6px;cursor:pointer;overflow:hidden;pointer-events:auto;display:flex;flex-direction:column;justify-content:center}
-.ebar:hover{filter:brightness(0.95)}
+.ebar:hover{filter:brightness(0.93)}
 .ebar.dimmed{opacity:0.18}
 .en{font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.4}
 .ep{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;opacity:0.85}
+
 /* 팝업 오버레이 */
-.pop-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:290;display:none}
-.pop-overlay.open{display:block}
+.pop-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:290;display:none}
 /* 팝업 */
-.pop{position:fixed;z-index:300;background:#fff;border-radius:16px;padding:0;width:min(480px,92vw);max-height:80vh;display:none;box-shadow:0 8px 32px rgba(0,0,0,0.18);overflow:hidden;flex-direction:column;top:50%;left:50%;transform:translate(-50%,-50%)}
-.pop.open{display:flex}
-.pop-header{padding:1.1rem 1.25rem 0.75rem;border-bottom:1px solid #f0f0f0}
-.pop-plat{font-size:11px;padding:2px 9px;border-radius:20px;display:inline-block;margin-bottom:7px;font-weight:500}
-.pop-name{font-size:15px;font-weight:700;color:#111;margin-bottom:3px;line-height:1.4}
+.pop{position:fixed;z-index:300;background:#fff;border-radius:16px;width:min(520px,92vw);max-height:82vh;display:none;box-shadow:0 8px 40px rgba(0,0,0,0.18);overflow:hidden;flex-direction:column;top:50%;left:50%;transform:translate(-50%,-50%)}
+.pop-header{padding:1.2rem 1.4rem 0.875rem;border-bottom:1px solid #f0f0f0;flex-shrink:0}
+.pop-plat-badge{font-size:11px;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:8px;font-weight:600}
+.pop-name{font-size:16px;font-weight:700;color:#111;margin-bottom:4px;line-height:1.4}
 .pop-date{font-size:12px;color:#999}
-.pop-body{padding:0.875rem 1.25rem;overflow-y:auto;flex:1}
-.pop-section-title{font-size:11px;color:#aaa;font-weight:600;letter-spacing:0.04em;margin-bottom:6px;text-transform:uppercase}
-.pop-tbl{width:100%;font-size:13px;border-collapse:collapse;margin-bottom:0.75rem}
-.pop-tbl th{color:#aaa;font-weight:500;text-align:left;padding:5px 8px 5px 0;border-bottom:1px solid #f0f0f0;font-size:11px}
-.pop-tbl td{padding:7px 8px 7px 0;border-bottom:1px solid #f5f5f5;color:#111;vertical-align:middle}
+.pop-body{padding:1rem 1.4rem;overflow-y:auto;flex:1}
+.pop-sec-title{font-size:11px;color:#aaa;font-weight:600;letter-spacing:0.05em;margin-bottom:8px}
+.pop-tbl{width:100%;font-size:13px;border-collapse:collapse;margin-bottom:1rem}
+.pop-tbl th{color:#aaa;font-weight:500;text-align:left;padding:5px 10px 5px 0;border-bottom:1px solid #eee;font-size:11px}
+.pop-tbl td{padding:8px 10px 8px 0;border-bottom:1px solid #f5f5f5;color:#111;vertical-align:middle}
 .pop-tbl tr:last-child td{border:none}
-.pop-price-orig{text-decoration:line-through;color:#bbb;font-size:12px}
-.pop-price-sale{color:#993C1D;font-weight:700}
-.pop-disc{display:inline-block;background:#FCEBEB;color:#A32D2D;font-size:11px;padding:1px 6px;border-radius:4px;font-weight:600}
-.pop-memo{font-size:12px;color:#888;background:#f9f9f7;border-radius:8px;padding:8px 10px;margin-top:4px}
-.pop-footer{padding:0.75rem 1.25rem;border-top:1px solid #f0f0f0;display:flex;gap:8px}
-.pop-edit{font-size:13px;padding:7px 16px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#111;cursor:pointer;font-weight:500}
-.pop-edit:hover{background:#f5f5f3}
-.pop-close{font-size:13px;padding:7px 16px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#999;cursor:pointer;margin-left:auto}
-.pop-close:hover{background:#f5f5f3}
+.pop-orig{text-decoration:line-through;color:#ccc;font-size:12px}
+.pop-sale{color:#993C1D;font-weight:700;font-size:14px}
+.pop-disc{background:#FCEBEB;color:#A32D2D;font-size:11px;padding:2px 7px;border-radius:4px;font-weight:600;display:inline-block}
+.pop-memo-box{font-size:12px;color:#666;background:#f9f9f7;border-radius:8px;padding:10px 12px;line-height:1.6}
+.pop-footer{padding:0.875rem 1.4rem;border-top:1px solid #f0f0f0;display:flex;gap:8px;flex-shrink:0}
+.pop-btn-edit{font-size:13px;padding:7px 18px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#111;cursor:pointer;font-weight:500}
+.pop-btn-edit:hover{background:#f5f5f3}
+.pop-btn-close{font-size:13px;padding:7px 18px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#999;cursor:pointer;margin-left:auto}
+.pop-btn-close:hover{background:#f5f5f3}
+
 /* 모달 공통 */
-.mbg{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;align-items:center;justify-content:center;z-index:200}
+.mbg{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;align-items:center;justify-content:center;z-index:400}
 .mbg.open{display:flex}
 .modal{background:#fff;border-radius:14px;padding:1.5rem;width:min(500px,94vw);max-height:88vh;overflow-y:auto}
 .modal h2{font-size:16px;font-weight:600;margin-bottom:1rem;color:#111}
@@ -123,24 +122,23 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .bdl{font-size:13px;padding:7px 16px;border:1px solid #E24B4A;border-radius:8px;background:#fff;color:#E24B4A;cursor:pointer;margin-right:auto}
 
 /* 플랫폼 관리 모달 */
-.plat-modal{background:#fff;border-radius:14px;padding:1.5rem;width:min(460px,94vw);max-height:88vh;overflow-y:auto}
+.plat-modal{background:#fff;border-radius:14px;padding:1.5rem;width:min(500px,94vw);max-height:88vh;overflow-y:auto}
 .plat-modal h2{font-size:16px;font-weight:600;margin-bottom:0.25rem;color:#111}
 .plat-modal .sub{font-size:12px;color:#aaa;margin-bottom:1rem}
 .plat-list{display:flex;flex-direction:column;gap:6px;margin-bottom:1rem}
-.plat-item{display:grid;grid-template-columns:32px 1fr 72px 72px 36px 36px;gap:6px;align-items:center;background:#f9f9f9;border-radius:8px;padding:7px 10px}
+.plat-item{display:grid;grid-template-columns:28px 1fr 60px 60px 44px 32px;gap:6px;align-items:center;background:#f9f9f9;border-radius:8px;padding:7px 10px}
 .plat-item .pi-idx{font-size:11px;color:#bbb;text-align:center}
 .plat-item input[type=text]{font-size:13px;padding:5px 8px;border:1px solid #ddd;border-radius:6px;width:100%}
 .plat-item input[type=color]{width:100%;height:32px;padding:2px;border:1px solid #ddd;border-radius:6px;cursor:pointer;background:#fff}
-.pi-label{font-size:11px;color:#aaa;text-align:center}
+.pi-preview{font-size:11px;padding:3px 6px;border-radius:6px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pi-del{font-size:18px;color:#E24B4A;background:none;border:none;cursor:pointer;line-height:1;padding:0}
-.pi-drag{font-size:16px;color:#ccc;cursor:grab;line-height:1;padding:0;background:none;border:none}
 .plat-add-row{display:flex;gap:8px;align-items:center}
-.plat-add-row input{font-size:13px;padding:7px 10px;border:1px solid #ddd;border-radius:8px;flex:1}
-.plat-add-row input[type=color]{width:48px;flex:none;height:36px;padding:2px;border-radius:8px;cursor:pointer}
+.plat-add-row input[type=text]{font-size:13px;padding:7px 10px;border:1px solid #ddd;border-radius:8px;flex:1;outline:none}
+.plat-add-row input[type=color]{width:44px;flex:none;height:36px;padding:2px;border-radius:8px;cursor:pointer;border:1px solid #ddd}
 .btn-plat-add{font-size:13px;padding:7px 14px;border:1px solid #534AB7;border-radius:8px;background:#534AB7;color:#CECBF6;cursor:pointer;white-space:nowrap}
-.plat-head{display:grid;grid-template-columns:32px 1fr 72px 72px 36px 36px;gap:6px;padding:0 10px;margin-bottom:4px}
-.plat-head span{font-size:11px;color:#bbb;text-align:center}
-.plat-head span:nth-child(2){text-align:left}
+.plat-head{display:grid;grid-template-columns:28px 1fr 60px 60px 44px 32px;gap:6px;padding:0 10px;margin-bottom:4px}
+.plat-head span{font-size:11px;color:#bbb}
+.saving-msg{font-size:12px;color:#888;margin-top:8px;text-align:center}
 
 @media(max-width:600px){
   body{padding:0.75rem}
@@ -151,7 +149,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 </head>
 <body>
 <div class="container">
-
 <div class="topbar">
   <h1>🥬 선김치 행사 프로모션 캘린더</h1>
   <div class="cal-nav">
@@ -166,7 +163,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div class="sync-bar">
   <span class="sync-dot loading" id="sdot"></span>
   <span id="smsg">Google Sheets 연결 중...</span>
-  <button class="btn-sync" onclick="loadFromSheets()">&#8635; 새로고침</button>
+  <button class="btn-sync" onclick="loadAll()">&#8635; 새로고침</button>
 </div>
 
 <div class="search-bar">
@@ -197,13 +194,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 <!-- 팝업 오버레이 -->
 <div class="pop-overlay" id="pop-overlay" onclick="closePop()"></div>
-<!-- 팝업 -->
+<!-- 상세 팝업 -->
 <div class="pop" id="pop">
   <div class="pop-header" id="pop-header"></div>
   <div class="pop-body" id="pop-body"></div>
   <div class="pop-footer">
-    <button class="pop-edit" id="pop-edit">✏️ 편집</button>
-    <button class="pop-close" onclick="closePop()">닫기</button>
+    <button class="pop-btn-edit" id="pop-btn-edit">✏️ 편집</button>
+    <button class="pop-btn-close" onclick="closePop()">닫기</button>
   </div>
 </div>
 
@@ -237,9 +234,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div class="mbg" id="pmbg" onclick="if(event.target===this)closePlatModal()">
 <div class="plat-modal">
   <h2>플랫폼 관리</h2>
-  <div class="sub">플랫폼을 자유롭게 추가·수정·삭제할 수 있어요. 변경사항은 즉시 저장돼요.</div>
+  <div class="sub">플랫폼을 자유롭게 추가·수정·삭제할 수 있어요. 저장 시 Google Sheets에 반영돼요.</div>
   <div class="plat-head">
-    <span>#</span><span>플랫폼명</span><span style="text-align:center">배경색</span><span style="text-align:center">글자색</span><span></span><span></span>
+    <span>#</span><span>플랫폼명</span><span style="text-align:center">배경색</span><span style="text-align:center">글자색</span><span>미리보기</span><span></span>
   </div>
   <div class="plat-list" id="plat-list"></div>
   <div style="border-top:1px solid #eee;padding-top:0.875rem;margin-top:0.25rem">
@@ -248,180 +245,103 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <input type="text" id="new-plat-name" placeholder="플랫폼명 (예: 티몬)">
       <input type="color" id="new-plat-bg" value="#E6F1FB" title="배경색">
       <input type="color" id="new-plat-tc" value="#0C447C" title="글자색">
-      <button class="btn-plat-add" onclick="addPlat()">+ 추가</button>
+      <button class="btn-plat-add" onclick="addPlatRow()">+ 추가</button>
     </div>
   </div>
   <div class="mbtns" style="margin-top:1rem">
-    <button class="bcl" onclick="closePlatModal()">닫기</button>
-    <button class="bsv" onclick="savePlats()">저장</button>
+    <button class="bcl" onclick="closePlatModal()">취소</button>
+    <button class="bsv" onclick="savePlats()">Sheets에 저장</button>
   </div>
+  <div class="saving-msg" id="plat-save-msg"></div>
 </div>
 </div>
 
 <script>
-const GAS_URL='https://script.google.com/macros/s/AKfycbxAW-hsytkEi11EDac-oHZV5_KEVIwpMnI7tpDd4uPyjbHVq1MGR37RctU8cMxcoiYMOA/exec';
+// ── GAS URL ──
+const GAS='https://script.google.com/macros/s/AKfycbxAW-hsytkEi11EDac-oHZV5_KEVIwpMnI7tpDd4uPyjbHVq1MGR37RctU8cMxcoiYMOA/exec';
 
-// 기본 플랫폼 (로컬스토리지에 없으면 사용)
+// 플랫폼 기본값 (Sheets에 없을 때만 사용)
 const DEFAULT_PLATS=[
-  {id:'naver', name:'네이버 스마트스토어', bg:'#E6F1FB', tc:'#0C447C'},
-  {id:'sun',   name:'선김치몰',            bg:'#EAF3DE', tc:'#27500A'},
-  {id:'coupang',name:'쿠팡',              bg:'#FAECE7', tc:'#712B13'},
-  {id:'kakao', name:'카카오쇼핑',          bg:'#FAEEDA', tc:'#633806'},
-  {id:'wemake',name:'위메프',             bg:'#FBEAF0', tc:'#72243E'},
-  {id:'tmon',  name:'티몬',              bg:'#F1EFE8', tc:'#444441'},
-  {id:'11st',  name:'11번가',            bg:'#FCEBEB', tc:'#791F1F'},
-  {id:'etc',   name:'기타',              bg:'#F1EFE8', tc:'#444441'},
+  {id:'naver',  name:'네이버 스마트스토어',bg:'#E6F1FB',tc:'#0C447C'},
+  {id:'sun',    name:'선김치몰',           bg:'#EAF3DE',tc:'#27500A'},
+  {id:'coupang',name:'쿠팡',              bg:'#FAECE7',tc:'#712B13'},
+  {id:'kakao',  name:'카카오쇼핑',         bg:'#FAEEDA',tc:'#633806'},
+  {id:'wemake', name:'위메프',            bg:'#FBEAF0',tc:'#72243E'},
+  {id:'tmon',   name:'티몬',             bg:'#F1EFE8',tc:'#5F5E5A'},
+  {id:'11st',   name:'11번가',           bg:'#FCEBEB',tc:'#791F1F'},
+  {id:'etc',    name:'기타',             bg:'#F1EFE8',tc:'#444441'},
 ];
 
-let plats=[];
-let evs=[],curP='all',curY=new Date().getFullYear(),curM=new Date().getMonth(),editId=null,srchQ='',srchIds=new Set();
+let plats=[], evs=[], curP='all', curY=new Date().getFullYear(), curM=new Date().getMonth(), editId=null, srchQ='', srchIds=new Set();
 
-/* ── 플랫폼 로드/저장 ── */
-function loadPlats(){
-  const saved=localStorage.getItem('sunkimchi_plats');
-  plats=saved?JSON.parse(saved):JSON.parse(JSON.stringify(DEFAULT_PLATS));
-}
-function savePlatsLocal(){localStorage.setItem('sunkimchi_plats',JSON.stringify(plats));}
-
-function platById(id){return plats.find(p=>p.id===id)||{name:id,bg:'#F1EFE8',tc:'#444'};}
-
-/* ── 플랫폼 관리 모달 ── */
-function openPlatModal(){
-  renderPlatList();
-  document.getElementById('pmbg').classList.add('open');
-}
-function closePlatModal(){document.getElementById('pmbg').classList.remove('open');}
-
-function renderPlatList(){
-  const list=document.getElementById('plat-list');
-  list.innerHTML=plats.map((p,i)=>`
-    <div class="plat-item" data-idx="${i}">
-      <span class="pi-idx">${i+1}</span>
-      <input type="text" value="${p.name}" placeholder="플랫폼명" onchange="plats[${i}].name=this.value">
-      <input type="color" value="${p.bg}" title="배경색" onchange="plats[${i}].bg=this.value" style="height:32px">
-      <input type="color" value="${p.tc}" title="글자색" onchange="plats[${i}].tc=this.value" style="height:32px">
-      <span style="font-size:11px;padding:2px 6px;border-radius:10px;background:${p.bg};color:${p.tc};white-space:nowrap;text-align:center;line-height:28px">${p.name.slice(0,3)}</span>
-      <button class="pi-del" onclick="removePlat(${i})">×</button>
-    </div>`).join('');
-}
-
-function addPlat(){
-  const name=document.getElementById('new-plat-name').value.trim();
-  if(!name){alert('플랫폼명을 입력해주세요.');return;}
-  const bg=document.getElementById('new-plat-bg').value;
-  const tc=document.getElementById('new-plat-tc').value;
-  const id='plat_'+Date.now();
-  plats.push({id,name,bg,tc});
-  document.getElementById('new-plat-name').value='';
-  renderPlatList();
-}
-
-function removePlat(i){
-  if(plats.length<=1){alert('최소 1개의 플랫폼이 필요해요.');return;}
-  if(!confirm(`"${plats[i].name}" 플랫폼을 삭제할까요?`))return;
-  plats.splice(i,1);
-  renderPlatList();
-}
-
-function savePlats(){
-  // 현재 입력값 동기화
-  document.querySelectorAll('#plat-list .plat-item').forEach((el,i)=>{
-    plats[i].name=el.querySelector('input[type=text]').value.trim()||plats[i].name;
-    plats[i].bg=el.querySelector('input[type=color]:nth-of-type(1)').value;
-    plats[i].tc=el.querySelector('input[type=color]:nth-of-type(2)').value;
-  });
-  savePlatsLocal();
-  closePlatModal();
-  renderFilters();
-  render();
-  alert('플랫폼이 저장됐어요!');
-}
-
-/* ── 필터 렌더 ── */
-function renderFilters(){
-  const f=document.getElementById('filters');
-  let html=`<button class="pill${curP==='all'?' on':''}" onclick="setP(this,'all')" style="${curP==='all'?'background:#EEEDFE;color:#3C3489;border-color:#534AB7':''}">전체</button>`;
-  plats.forEach(p=>{
-    const on=curP===p.id;
-    html+=`<button class="pill${on?' on':''}" onclick="setP(this,'${p.id}')" style="${on?`background:${p.bg};color:${p.tc};border-color:${p.tc}`:''}">${p.name}</button>`;
-  });
-  f.innerHTML=html;
-}
-
-/* ── Sheets 연동 ── */
-function setSyncStatus(state,msg){
-  document.getElementById('sdot').className='sync-dot '+state;
-  document.getElementById('smsg').textContent=msg;
-}
-async function loadFromSheets(){
-  setSyncStatus('loading','Google Sheets에서 불러오는 중...');
-  try{
-    const res=await fetch(GAS_URL+'?t='+Date.now());
-    const json=await res.json();
-    if(json.ok){
-      evs=json.data.map(e=>({
-        ...e,
-        id:Number(e.id)||e.id,
-        start:fmtDate(e.start),
-        end:fmtDate(e.end),
-        products:Array.isArray(e.products)?e.products:[]
-      }));
-      const now=new Date();
-      setSyncStatus('ok','연동 완료 · '+now.getHours()+':'+String(now.getMinutes()).padStart(2,'0')+' 기준');
-      render();
-    } else throw new Error();
-  } catch{
-    setSyncStatus('err','연결 실패 — 새로고침을 눌러주세요');
-    render();
-  }
-}
-async function postToSheets(action,event){
-  const res=await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action,event})});
-  return res.json();
-}
-
-/* ── 검색 ── */
-function hl(t,q){if(!q)return t;return t.replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<span class="sr-hl">$1</span>');}
-function doSearch(v){
-  srchQ=v.trim();
-  document.getElementById('scl').style.display=srchQ?'block':'none';
-  if(!srchQ){srchIds=new Set();document.getElementById('srp').style.display='none';document.getElementById('scnt').textContent='';renderCal();return;}
-  const q=srchQ.toLowerCase();
-  const found=evs.filter(e=>e.name.toLowerCase().includes(q)||e.products.some(p=>p.name.toLowerCase().includes(q))).sort((a,b)=>a.start.localeCompare(b.start));
-  srchIds=new Set(found.map(e=>e.id));
-  document.getElementById('scnt').textContent=found.length+'건';
-  document.getElementById('srt').textContent='"'+srchQ+'" 검색 결과 — '+found.length+'건 (날짜순)';
-  document.getElementById('srp').style.display='block';
-  if(!found.length){document.getElementById('srl').innerHTML='<div class="sr-empty">검색 결과가 없습니다.</div>';renderCal();return;}
-  document.getElementById('srl').innerHTML=found.map(e=>{
-    const pl=platById(e.plat);
-    const badge=`<span style="font-size:11px;padding:2px 8px;border-radius:20px;background:${pl.bg};color:${pl.tc};font-weight:500">${pl.name}</span>`;
-    const rows=e.products.map(p=>{const d=p.orig?Math.round((1-p.sale/p.orig)*100):0;return`<tr><td>${hl(p.name,srchQ)}</td><td style="text-decoration:line-through;color:#bbb">${fmt(p.orig)}</td><td style="color:#993C1D;font-weight:600">${fmt(p.sale)}</td><td style="color:#993C1D;font-size:11px">${d?d+'%':''}</td></tr>`;}).join('');
-    return`<div class="sr-item"><div class="sr-top">${badge}<span class="sr-name">${hl(e.name,srchQ)}</span><span class="sr-date">${e.start} ~ ${e.end}</span></div><table class="sr-tbl"><tr><th>상품명</th><th>정가</th><th>행사가</th><th>할인율</th></tr>${rows}</table></div>`;
-  }).join('');
-  renderCal();
-}
-function clearSrch(){document.getElementById('sq').value='';doSearch('');}
-
-// 날짜 문자열을 YYYY-MM-DD로 안전하게 변환 (timezone 오류 방지)
-function fmtDate(v){
-  if(!v)return'';
-  // 이미 YYYY-MM-DD 형식이면 그대로
-  if(/^\d{4}-\d{2}-\d{2}$/.test(String(v).trim()))return String(v).trim();
-  // Date 객체로 들어오는 경우 (Sheets가 Date 직렬화할 때)
-  const d=new Date(v);
-  if(isNaN(d))return String(v).trim();
-  // UTC 기준이 아닌 로컬 날짜로 추출
-  return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
-}
+// ── 유틸 ──
 function fmt(n){return Number(n).toLocaleString()+'원'}
 function pad(n){return String(n).padStart(2,'0')}
 function dstr(y,m,d){return y+'-'+pad(m+1)+'-'+pad(d)}
 function today(){const d=new Date();return dstr(d.getFullYear(),d.getMonth(),d.getDate())}
+function fmtDate(v){
+  if(!v)return'';
+  if(/^\d{4}-\d{2}-\d{2}$/.test(String(v).trim()))return String(v).trim();
+  const d=new Date(v);
+  if(isNaN(d))return String(v).trim();
+  return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+}
+function platById(id){return plats.find(p=>p.id===String(id))||{name:id,bg:'#F1EFE8',tc:'#444'};}
 function filt(){return curP==='all'?evs:evs.filter(e=>e.plat===curP)}
-function setP(el,p){curP=p;renderFilters();render();}
+
+// ── Sheets 통신 ──
+function setSyncStatus(state,msg){
+  document.getElementById('sdot').className='sync-dot '+state;
+  document.getElementById('smsg').textContent=msg;
+}
+async function gasGet(params=''){
+  const res=await fetch(GAS+'?t='+Date.now()+(params?'&'+params:''));
+  return res.json();
+}
+async function gasPost(body){
+  const res=await fetch(GAS,{method:'POST',body:JSON.stringify(body)});
+  return res.json();
+}
+
+// ── 전체 로드 (행사 + 플랫폼) ──
+async function loadAll(){
+  setSyncStatus('loading','데이터 불러오는 중...');
+  try{
+    // 행사 데이터
+    const evJson=await gasGet('type=events');
+    if(evJson.ok){
+      evs=evJson.data.map(e=>({...e,id:Number(e.id)||e.id,start:fmtDate(e.start),end:fmtDate(e.end),products:Array.isArray(e.products)?e.products:[]}));
+    }
+    // 플랫폼 데이터
+    const plJson=await gasGet('type=plats');
+    if(plJson.ok && plJson.data && plJson.data.length>0){
+      plats=plJson.data;
+    } else {
+      plats=JSON.parse(JSON.stringify(DEFAULT_PLATS));
+    }
+    const now=new Date();
+    setSyncStatus('ok','연동 완료 · '+now.getHours()+':'+pad(now.getMinutes())+' 기준');
+    render();
+  }catch(e){
+    setSyncStatus('err','연결 실패 — 새로고침을 눌러주세요');
+    if(!plats.length) plats=JSON.parse(JSON.stringify(DEFAULT_PLATS));
+    render();
+  }
+}
+
+// ── 필터 ──
+function renderFilters(){
+  let html=`<button class="pill${curP==='all'?' on':''}" onclick="setP('all')" style="${curP==='all'?'background:#EEEDFE;color:#3C3489;border-color:#534AB7':''}">전체</button>`;
+  plats.forEach(p=>{
+    const on=curP===p.id;
+    html+=`<button class="pill${on?' on':''}" onclick="setP('${p.id}')" style="${on?`background:${p.bg};color:${p.tc};border-color:${p.tc}`:''}"> ${p.name}</button>`;
+  });
+  document.getElementById('filters').innerHTML=html;
+}
+function setP(p){curP=p;renderFilters();renderMetrics();renderCal();}
 function navM(d){curM+=d;if(curM<0){curM=11;curY--;}if(curM>11){curM=0;curY++;}render();}
 
+// ── 지표 ──
 function renderMetrics(){
   const ev=filt(),t=today();
   const a=ev.filter(e=>e.start<=t&&t<=e.end).length;
@@ -433,17 +353,18 @@ function renderMetrics(){
     <div class="metric"><div class="lb">예정</div><div class="val" style="color:#185FA5">${u}</div></div>
     <div class="metric"><div class="lb">종료</div><div class="val" style="color:#aaa">${en}</div></div>`;
 }
+
 function render(){
   document.getElementById('mlabel').textContent=curY+'년 '+(curM+1)+'월';
-  renderFilters();
-  renderMetrics();
-  renderCal();
+  renderFilters();renderMetrics();renderCal();
 }
+
+// ── 캘린더 ──
 function renderCal(){
   const firstDay=new Date(curY,curM,1).getDay();
   const dim=new Date(curY,curM+1,0).getDate();
   const pdim=new Date(curY,curM,0).getDate();
-  const t=today();const ev=filt();
+  const t=today(); const ev=filt();
   const cells=[];
   for(let i=firstDay-1;i>=0;i--){const pm=curM===0?11:curM-1,py=curM===0?curY-1:curY;cells.push({y:py,m:pm,d:pdim-i,other:true});}
   for(let d=1;d<=dim;d++)cells.push({y:curY,m:curM,d,other:false});
@@ -482,9 +403,10 @@ function renderCal(){
         const W=((ec-sc+1)/7*100).toFixed(2);const L=(sc/7*100).toFixed(2);
         const dimmed=srchQ&&!srchIds.has(e.id)?'dimmed':'';
         const pt=e.products.map(p=>p.name+' '+fmt(p.sale)).join(' · ');
-        const displayName=`[${pl.name}] ${e.name}`;
-        html+=`<div class="ebar ${dimmed}" style="left:calc(${L}% + 1px);width:calc(${W}% - 3px);border-radius:${rL} ${rR} ${rR} ${rL};background:${pl.bg};color:${pl.tc}" onclick="showPop(event,${JSON.stringify(String(e.id))})">
-          <span class="en">${displayName}</span><span class="ep">${pt}</span>
+        const eid=String(e.id);
+        html+=`<div class="ebar ${dimmed}" style="left:calc(${L}% + 1px);width:calc(${W}% - 3px);border-radius:${rL} ${rR} ${rR} ${rL};background:${pl.bg};color:${pl.tc}" onclick="showPop(event,'${eid.replace(/'/g,"\\'")}')">
+          <span class="en">[${pl.name}] ${e.name}</span>
+          <span class="ep">${pt}</span>
         </div>`;
       });
       html+=`</div>`;
@@ -494,53 +416,76 @@ function renderCal(){
   document.getElementById('calbody').innerHTML=html;
 }
 
-/* ── 팝업 ── */
-function showPop(ev,id){
+// ── 팝업 ──
+function showPop(ev, id){
   ev.stopPropagation();
-  const e=evs.find(v=>String(v.id)===String(id));if(!e)return;
+  const e=evs.find(v=>String(v.id)===String(id));
+  if(!e)return;
   const pl=platById(e.plat);
-  const totalProducts=e.products.length;
-  const rows=e.products.map((p,i)=>{
-    const d=p.orig?Math.round((1-p.sale/p.orig)*100):0;
+  const rows=e.products.map(p=>{
+    const d=p.orig?Math.round((1-Number(p.sale)/Number(p.orig))*100):0;
     return`<tr>
       <td style="font-weight:500">${p.name}</td>
-      <td class="pop-price-orig">${p.orig?fmt(p.orig):'-'}</td>
-      <td class="pop-price-sale">${fmt(p.sale)}</td>
+      <td class="pop-orig">${p.orig?fmt(p.orig):'-'}</td>
+      <td class="pop-sale">${fmt(p.sale)}</td>
       <td>${d?`<span class="pop-disc">${d}%</span>`:''}</td>
     </tr>`;
   }).join('');
 
   document.getElementById('pop-header').innerHTML=`
-    <div class="pop-plat" style="background:${pl.bg};color:${pl.tc}">${pl.name}</div>
+    <div class="pop-plat-badge" style="background:${pl.bg};color:${pl.tc}">${pl.name}</div>
     <div class="pop-name">${e.name}</div>
     <div class="pop-date">📅 ${e.start} ~ ${e.end}</div>`;
 
   document.getElementById('pop-body').innerHTML=`
-    <div class="pop-section-title">행사 상품 (${totalProducts}개)</div>
+    <div class="pop-sec-title">행사 상품 (${e.products.length}개)</div>
     <table class="pop-tbl">
       <tr><th>상품명</th><th>정가</th><th>행사가</th><th>할인율</th></tr>
       ${rows}
     </table>
-    ${e.memo?`<div class="pop-section-title">메모</div><div class="pop-memo">📌 ${e.memo}</div>`:''}`;
+    ${e.memo?`<div class="pop-sec-title" style="margin-top:0.5rem">메모</div><div class="pop-memo-box">📌 ${e.memo}</div>`:''}`;
 
-  document.getElementById('pop-edit').onclick=()=>{closePop();openModal(id);};
-  document.getElementById('pop').classList.add('open');
-  document.getElementById('pop-overlay').classList.add('open');
+  document.getElementById('pop-btn-edit').onclick=()=>{closePop();openModal(id);};
+
+  const popEl=document.getElementById('pop');
+  const overlayEl=document.getElementById('pop-overlay');
+  popEl.style.display='flex';
+  overlayEl.style.display='block';
 }
-function outPop(e){if(!document.getElementById('pop').contains(e.target))closePop();}
 function closePop(){
-  document.getElementById('pop').classList.remove('open');
-  document.getElementById('pop-overlay').classList.remove('open');
-  document.removeEventListener('click',outPop);
+  document.getElementById('pop').style.display='none';
+  document.getElementById('pop-overlay').style.display='none';
 }
 
-/* ── 행사 모달 ── */
+// ── 검색 ──
+function hl(t,q){if(!q)return t;return t.replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<span class="sr-hl">$1</span>');}
+function doSearch(v){
+  srchQ=v.trim();
+  document.getElementById('scl').style.display=srchQ?'block':'none';
+  if(!srchQ){srchIds=new Set();document.getElementById('srp').style.display='none';document.getElementById('scnt').textContent='';renderCal();return;}
+  const q=srchQ.toLowerCase();
+  const found=evs.filter(e=>e.name.toLowerCase().includes(q)||e.products.some(p=>p.name.toLowerCase().includes(q))).sort((a,b)=>a.start.localeCompare(b.start));
+  srchIds=new Set(found.map(e=>e.id));
+  document.getElementById('scnt').textContent=found.length+'건';
+  document.getElementById('srt').textContent='"'+srchQ+'" 검색 결과 — '+found.length+'건 (날짜순)';
+  document.getElementById('srp').style.display='block';
+  if(!found.length){document.getElementById('srl').innerHTML='<div class="sr-empty">검색 결과가 없습니다.</div>';renderCal();return;}
+  document.getElementById('srl').innerHTML=found.map(e=>{
+    const pl=platById(e.plat);
+    const badge=`<span style="font-size:11px;padding:2px 8px;border-radius:20px;background:${pl.bg};color:${pl.tc};font-weight:500">${pl.name}</span>`;
+    const rows=e.products.map(p=>{const d=p.orig?Math.round((1-p.sale/p.orig)*100):0;return`<tr><td>${hl(p.name,srchQ)}</td><td style="text-decoration:line-through;color:#bbb">${fmt(p.orig)}</td><td style="color:#993C1D;font-weight:600">${fmt(p.sale)}</td><td style="color:#993C1D;font-size:11px">${d?d+'%':''}</td></tr>`;}).join('');
+    return`<div class="sr-item"><div class="sr-top">${badge}<span class="sr-name">${hl(e.name,srchQ)}</span><span class="sr-date">${e.start} ~ ${e.end}</span></div><table class="sr-tbl"><tr><th>상품명</th><th>정가</th><th>행사가</th><th>할인율</th></tr>${rows}</table></div>`;
+  }).join('');
+  renderCal();
+}
+function clearSrch(){document.getElementById('sq').value='';doSearch('');}
+
+// ── 행사 모달 ──
 function openModal(id){
   editId=id||null;
   document.getElementById('mtitle').textContent=id?'행사 수정':'행사 등록';
   document.getElementById('bdl').style.display=id?'block':'none';
   document.getElementById('prows').innerHTML='';
-  // 플랫폼 select 동적 생성
   document.getElementById('fp').innerHTML=plats.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
   if(id){
     const e=evs.find(v=>String(v.id)===String(id));
@@ -580,21 +525,66 @@ async function saveEv(){
   const ev={name,plat,start,end,products,memo};
   closeModal();setSyncStatus('loading','저장 중...');
   try{
-    if(editId){ev.id=editId;await postToSheets('update',ev);}
-    else await postToSheets('add',ev);
-    await loadFromSheets();
-  } catch{setSyncStatus('err','저장 실패 — 네트워크를 확인해주세요');}
+    if(editId){ev.id=editId;await gasPost({action:'update',event:ev});}
+    else await gasPost({action:'add',event:ev});
+    await loadAll();
+  }catch{setSyncStatus('err','저장 실패');}
 }
 async function delEv(){
   if(!confirm('이 행사를 삭제할까요?'))return;
   closeModal();setSyncStatus('loading','삭제 중...');
-  try{await postToSheets('delete',{id:editId});await loadFromSheets();}
+  try{await gasPost({action:'delete',event:{id:editId}});await loadAll();}
   catch{setSyncStatus('err','삭제 실패');}
 }
 
-// 초기화
-loadPlats();
-loadFromSheets();
+// ── 플랫폼 관리 ──
+function openPlatModal(){
+  renderPlatList();
+  document.getElementById('plat-save-msg').textContent='';
+  document.getElementById('pmbg').classList.add('open');
+}
+function closePlatModal(){document.getElementById('pmbg').classList.remove('open');}
+function renderPlatList(){
+  document.getElementById('plat-list').innerHTML=plats.map((p,i)=>`
+    <div class="plat-item">
+      <span class="pi-idx">${i+1}</span>
+      <input type="text" value="${p.name}" oninput="plats[${i}].name=this.value;updatePreview(${i})">
+      <input type="color" value="${p.bg}" oninput="plats[${i}].bg=this.value;updatePreview(${i})">
+      <input type="color" value="${p.tc}" oninput="plats[${i}].tc=this.value;updatePreview(${i})">
+      <span class="pi-preview" id="prev-${i}" style="background:${p.bg};color:${p.tc}">${p.name.slice(0,4)}</span>
+      <button class="pi-del" onclick="removePlatRow(${i})">×</button>
+    </div>`).join('');
+}
+function updatePreview(i){
+  const el=document.getElementById('prev-'+i);
+  if(el){el.style.background=plats[i].bg;el.style.color=plats[i].tc;el.textContent=plats[i].name.slice(0,4);}
+}
+function addPlatRow(){
+  const name=document.getElementById('new-plat-name').value.trim();
+  if(!name){alert('플랫폼명을 입력해주세요.');return;}
+  const bg=document.getElementById('new-plat-bg').value;
+  const tc=document.getElementById('new-plat-tc').value;
+  plats.push({id:'plat_'+Date.now(),name,bg,tc});
+  document.getElementById('new-plat-name').value='';
+  renderPlatList();
+}
+function removePlatRow(i){
+  if(plats.length<=1){alert('최소 1개의 플랫폼이 필요해요.');return;}
+  if(!confirm(`"${plats[i].name}" 플랫폼을 삭제할까요?`))return;
+  plats.splice(i,1);renderPlatList();
+}
+async function savePlats(){
+  document.getElementById('plat-save-msg').textContent='저장 중...';
+  try{
+    await gasPost({action:'savePlats',plats});
+    document.getElementById('plat-save-msg').textContent='✅ 저장 완료!';
+    setTimeout(()=>{closePlatModal();render();},800);
+  }catch{
+    document.getElementById('plat-save-msg').textContent='❌ 저장 실패 — 다시 시도해주세요';
+  }
+}
+
+loadAll();
 </script>
 </body>
 </html>
