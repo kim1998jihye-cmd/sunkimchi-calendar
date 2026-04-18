@@ -74,19 +74,31 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .ebar.dimmed{opacity:0.18}
 .en{font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.4}
 .ep{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;opacity:0.85}
+/* 팝업 오버레이 */
+.pop-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:290;display:none}
+.pop-overlay.open{display:block}
 /* 팝업 */
-.pop{position:fixed;z-index:300;background:#fff;border:1px solid #ddd;border-radius:14px;padding:1.1rem;width:272px;display:none;box-shadow:0 6px 24px rgba(0,0,0,0.12)}
+.pop{position:fixed;z-index:300;background:#fff;border-radius:16px;padding:0;width:min(480px,92vw);max-height:80vh;display:none;box-shadow:0 8px 32px rgba(0,0,0,0.18);overflow:hidden;flex-direction:column;top:50%;left:50%;transform:translate(-50%,-50%)}
+.pop.open{display:flex}
+.pop-header{padding:1.1rem 1.25rem 0.75rem;border-bottom:1px solid #f0f0f0}
 .pop-plat{font-size:11px;padding:2px 9px;border-radius:20px;display:inline-block;margin-bottom:7px;font-weight:500}
-.pop-name{font-size:14px;font-weight:600;color:#111;margin-bottom:3px}
-.pop-date{font-size:12px;color:#999;margin-bottom:9px}
-.pop-tbl{width:100%;font-size:12px;border-collapse:collapse}
-.pop-tbl th{color:#999;font-weight:400;text-align:left;padding:2px 0;border-bottom:1px solid #eee}
-.pop-tbl td{padding:4px 0;border-bottom:1px solid #eee;color:#111}
+.pop-name{font-size:15px;font-weight:700;color:#111;margin-bottom:3px;line-height:1.4}
+.pop-date{font-size:12px;color:#999}
+.pop-body{padding:0.875rem 1.25rem;overflow-y:auto;flex:1}
+.pop-section-title{font-size:11px;color:#aaa;font-weight:600;letter-spacing:0.04em;margin-bottom:6px;text-transform:uppercase}
+.pop-tbl{width:100%;font-size:13px;border-collapse:collapse;margin-bottom:0.75rem}
+.pop-tbl th{color:#aaa;font-weight:500;text-align:left;padding:5px 8px 5px 0;border-bottom:1px solid #f0f0f0;font-size:11px}
+.pop-tbl td{padding:7px 8px 7px 0;border-bottom:1px solid #f5f5f5;color:#111;vertical-align:middle}
 .pop-tbl tr:last-child td{border:none}
-.pop-memo{font-size:11px;color:#aaa;margin-top:9px}
-.pop-actions{display:flex;gap:6px;margin-top:11px}
-.pop-edit{font-size:12px;padding:5px 12px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#111;cursor:pointer}
-.pop-close{font-size:12px;padding:5px 12px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#999;cursor:pointer;margin-left:auto}
+.pop-price-orig{text-decoration:line-through;color:#bbb;font-size:12px}
+.pop-price-sale{color:#993C1D;font-weight:700}
+.pop-disc{display:inline-block;background:#FCEBEB;color:#A32D2D;font-size:11px;padding:1px 6px;border-radius:4px;font-weight:600}
+.pop-memo{font-size:12px;color:#888;background:#f9f9f7;border-radius:8px;padding:8px 10px;margin-top:4px}
+.pop-footer{padding:0.75rem 1.25rem;border-top:1px solid #f0f0f0;display:flex;gap:8px}
+.pop-edit{font-size:13px;padding:7px 16px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#111;cursor:pointer;font-weight:500}
+.pop-edit:hover{background:#f5f5f3}
+.pop-close{font-size:13px;padding:7px 16px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#999;cursor:pointer;margin-left:auto}
+.pop-close:hover{background:#f5f5f3}
 /* 모달 공통 */
 .mbg{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;align-items:center;justify-content:center;z-index:200}
 .mbg.open{display:flex}
@@ -183,11 +195,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 </div>
 </div>
 
+<!-- 팝업 오버레이 -->
+<div class="pop-overlay" id="pop-overlay" onclick="closePop()"></div>
 <!-- 팝업 -->
 <div class="pop" id="pop">
-  <div id="pop-inner"></div>
-  <div class="pop-actions">
-    <button class="pop-edit" id="pop-edit">편집</button>
+  <div class="pop-header" id="pop-header"></div>
+  <div class="pop-body" id="pop-body"></div>
+  <div class="pop-footer">
+    <button class="pop-edit" id="pop-edit">✏️ 편집</button>
     <button class="pop-close" onclick="closePop()">닫기</button>
   </div>
 </div>
@@ -481,26 +496,43 @@ function renderCal(){
 
 /* ── 팝업 ── */
 function showPop(ev,id){
-  closePop();
+  ev.stopPropagation();
   const e=evs.find(v=>String(v.id)===String(id));if(!e)return;
   const pl=platById(e.plat);
-  const rows=e.products.map(p=>{const d=p.orig?Math.round((1-p.sale/p.orig)*100):0;return`<tr><td>${p.name}</td><td style="text-decoration:line-through;color:#bbb">${fmt(p.orig)}</td><td style="color:#993C1D;font-weight:600">${fmt(p.sale)}</td><td style="color:#993C1D;font-size:11px">${d?d+'%':''}</td></tr>`;}).join('');
-  document.getElementById('pop-inner').innerHTML=`
+  const totalProducts=e.products.length;
+  const rows=e.products.map((p,i)=>{
+    const d=p.orig?Math.round((1-p.sale/p.orig)*100):0;
+    return`<tr>
+      <td style="font-weight:500">${p.name}</td>
+      <td class="pop-price-orig">${p.orig?fmt(p.orig):'-'}</td>
+      <td class="pop-price-sale">${fmt(p.sale)}</td>
+      <td>${d?`<span class="pop-disc">${d}%</span>`:''}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('pop-header').innerHTML=`
     <div class="pop-plat" style="background:${pl.bg};color:${pl.tc}">${pl.name}</div>
     <div class="pop-name">${e.name}</div>
-    <div class="pop-date">${e.start} ~ ${e.end}</div>
-    <table class="pop-tbl"><tr><th>상품</th><th>정가</th><th>행사가</th><th>할인</th></tr>${rows}</table>
-    ${e.memo?`<div class="pop-memo">📌 ${e.memo}</div>`:''}`;
+    <div class="pop-date">📅 ${e.start} ~ ${e.end}</div>`;
+
+  document.getElementById('pop-body').innerHTML=`
+    <div class="pop-section-title">행사 상품 (${totalProducts}개)</div>
+    <table class="pop-tbl">
+      <tr><th>상품명</th><th>정가</th><th>행사가</th><th>할인율</th></tr>
+      ${rows}
+    </table>
+    ${e.memo?`<div class="pop-section-title">메모</div><div class="pop-memo">📌 ${e.memo}</div>`:''}`;
+
   document.getElementById('pop-edit').onclick=()=>{closePop();openModal(id);};
-  const pop=document.getElementById('pop');pop.style.display='block';
-  const r=ev.currentTarget.getBoundingClientRect();
-  let top=r.bottom+window.scrollY+8,left=r.left+window.scrollX;
-  if(left+280>window.innerWidth)left=window.innerWidth-284;
-  pop.style.top=top+'px';pop.style.left=Math.max(8,left)+'px';
-  setTimeout(()=>document.addEventListener('click',outPop),0);
+  document.getElementById('pop').classList.add('open');
+  document.getElementById('pop-overlay').classList.add('open');
 }
 function outPop(e){if(!document.getElementById('pop').contains(e.target))closePop();}
-function closePop(){document.getElementById('pop').style.display='none';document.removeEventListener('click',outPop);}
+function closePop(){
+  document.getElementById('pop').classList.remove('open');
+  document.getElementById('pop-overlay').classList.remove('open');
+  document.removeEventListener('click',outPop);
+}
 
 /* ── 행사 모달 ── */
 function openModal(id){
