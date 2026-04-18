@@ -12,6 +12,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .topbar h1{font-size:18px;font-weight:600;color:#111;flex:1}
 .btn-add{font-size:13px;padding:7px 16px;border:1px solid #534AB7;border-radius:8px;background:#534AB7;color:#CECBF6;cursor:pointer}
 .btn-add:hover{background:#3C3489}
+.btn-plat-mgr{font-size:13px;padding:7px 14px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#555;cursor:pointer}
+.btn-plat-mgr:hover{background:#f5f5f3}
 .cal-nav{display:flex;align-items:center;gap:6px}
 .cal-nav-label{font-size:15px;font-weight:600;color:#111;min-width:100px;text-align:center}
 .nav-btn{font-size:13px;padding:5px 11px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#111;cursor:pointer}
@@ -46,13 +48,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:0.75rem}
 .pill{font-size:12px;padding:4px 12px;border:1px solid #ddd;border-radius:20px;background:#fff;color:#666;cursor:pointer}
 .pill:hover{background:#f5f5f3}
-.pill.on{font-weight:600}
-.pa.on{background:#EEEDFE;color:#3C3489;border-color:#534AB7}
-.pn.on{background:#E6F1FB;color:#0C447C;border-color:#378ADD}
-.ps.on{background:#EAF3DE;color:#27500A;border-color:#639922}
-.pc.on{background:#FAECE7;color:#712B13;border-color:#D85A30}
-.pk.on{background:#FAEEDA;color:#633806;border-color:#BA7517}
-.pe.on{background:#F1EFE8;color:#444;border-color:#888}
+.pill.on{font-weight:600;border-color:currentColor}
 .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1rem}
 .metric{background:#f7f7f5;border-radius:10px;padding:0.75rem 1rem}
 .metric .lb{font-size:11px;color:#999;margin-bottom:3px}
@@ -73,17 +69,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .bar-slot{position:relative;height:30px;pointer-events:none}
 .bar-slot:first-child{margin-top:29px}
 .bar-slot+.bar-slot{margin-top:2px}
-.ebar{position:absolute;height:28px;border-radius:4px;padding:1px 6px;cursor:pointer;overflow:hidden;pointer-events:auto;display:flex;flex-direction:column;justify-content:center;transition:opacity 0.15s}
+.ebar{position:absolute;height:28px;border-radius:4px;padding:1px 6px;cursor:pointer;overflow:hidden;pointer-events:auto;display:flex;flex-direction:column;justify-content:center}
 .ebar:hover{filter:brightness(0.95)}
 .ebar.dimmed{opacity:0.18}
 .en{font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.4}
 .ep{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;opacity:0.85}
-.cn{background:#E6F1FB;color:#0C447C}
-.cs{background:#EAF3DE;color:#27500A}
-.cc{background:#FAECE7;color:#712B13}
-.ck{background:#FAEEDA;color:#633806}
-.ce{background:#F1EFE8;color:#444}
-.loading-cal{text-align:center;padding:4rem;color:#aaa;font-size:14px}
 /* 팝업 */
 .pop{position:fixed;z-index:300;background:#fff;border:1px solid #ddd;border-radius:14px;padding:1.1rem;width:272px;display:none;box-shadow:0 6px 24px rgba(0,0,0,0.12)}
 .pop-plat{font-size:11px;padding:2px 9px;border-radius:20px;display:inline-block;margin-bottom:7px;font-weight:500}
@@ -97,7 +87,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .pop-actions{display:flex;gap:6px;margin-top:11px}
 .pop-edit{font-size:12px;padding:5px 12px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#111;cursor:pointer}
 .pop-close{font-size:12px;padding:5px 12px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#999;cursor:pointer;margin-left:auto}
-/* 모달 */
+/* 모달 공통 */
 .mbg{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;align-items:center;justify-content:center;z-index:200}
 .mbg.open{display:flex}
 .modal{background:#fff;border-radius:14px;padding:1.5rem;width:min(500px,94vw);max-height:88vh;overflow-y:auto}
@@ -119,6 +109,27 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .bsv{font-size:13px;padding:7px 16px;border:1px solid #534AB7;border-radius:8px;background:#534AB7;color:#CECBF6;cursor:pointer}
 .bsv:hover{background:#3C3489}
 .bdl{font-size:13px;padding:7px 16px;border:1px solid #E24B4A;border-radius:8px;background:#fff;color:#E24B4A;cursor:pointer;margin-right:auto}
+
+/* 플랫폼 관리 모달 */
+.plat-modal{background:#fff;border-radius:14px;padding:1.5rem;width:min(460px,94vw);max-height:88vh;overflow-y:auto}
+.plat-modal h2{font-size:16px;font-weight:600;margin-bottom:0.25rem;color:#111}
+.plat-modal .sub{font-size:12px;color:#aaa;margin-bottom:1rem}
+.plat-list{display:flex;flex-direction:column;gap:6px;margin-bottom:1rem}
+.plat-item{display:grid;grid-template-columns:32px 1fr 72px 72px 36px 36px;gap:6px;align-items:center;background:#f9f9f9;border-radius:8px;padding:7px 10px}
+.plat-item .pi-idx{font-size:11px;color:#bbb;text-align:center}
+.plat-item input[type=text]{font-size:13px;padding:5px 8px;border:1px solid #ddd;border-radius:6px;width:100%}
+.plat-item input[type=color]{width:100%;height:32px;padding:2px;border:1px solid #ddd;border-radius:6px;cursor:pointer;background:#fff}
+.pi-label{font-size:11px;color:#aaa;text-align:center}
+.pi-del{font-size:18px;color:#E24B4A;background:none;border:none;cursor:pointer;line-height:1;padding:0}
+.pi-drag{font-size:16px;color:#ccc;cursor:grab;line-height:1;padding:0;background:none;border:none}
+.plat-add-row{display:flex;gap:8px;align-items:center}
+.plat-add-row input{font-size:13px;padding:7px 10px;border:1px solid #ddd;border-radius:8px;flex:1}
+.plat-add-row input[type=color]{width:48px;flex:none;height:36px;padding:2px;border-radius:8px;cursor:pointer}
+.btn-plat-add{font-size:13px;padding:7px 14px;border:1px solid #534AB7;border-radius:8px;background:#534AB7;color:#CECBF6;cursor:pointer;white-space:nowrap}
+.plat-head{display:grid;grid-template-columns:32px 1fr 72px 72px 36px 36px;gap:6px;padding:0 10px;margin-bottom:4px}
+.plat-head span{font-size:11px;color:#bbb;text-align:center}
+.plat-head span:nth-child(2){text-align:left}
+
 @media(max-width:600px){
   body{padding:0.75rem}
   .metrics{grid-template-columns:repeat(2,1fr)}
@@ -136,6 +147,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <span class="cal-nav-label" id="mlabel"></span>
     <button class="nav-btn" onclick="navM(1)">&#8594;</button>
   </div>
+  <button class="btn-plat-mgr" onclick="openPlatModal()">⚙ 플랫폼 관리</button>
   <button class="btn-add" onclick="openModal()">+ 행사 등록</button>
 </div>
 
@@ -158,15 +170,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div id="srl"></div>
 </div>
 
-<div class="filters">
-  <button class="pill pa on" onclick="setP(this,'all')">전체</button>
-  <button class="pill pn" onclick="setP(this,'naver')">네이버</button>
-  <button class="pill ps" onclick="setP(this,'sun')">선김치몰</button>
-  <button class="pill pc" onclick="setP(this,'coupang')">쿠팡</button>
-  <button class="pill pk" onclick="setP(this,'kakao')">카카오쇼핑</button>
-  <button class="pill pe" onclick="setP(this,'etc')">기타</button>
-</div>
-
+<div class="filters" id="filters"></div>
 <div class="metrics" id="metrics"></div>
 
 <div class="cal-outer">
@@ -175,7 +179,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="ch">월</div><div class="ch">화</div><div class="ch">수</div>
     <div class="ch">목</div><div class="ch">금</div><div class="ch">토</div>
   </div>
-  <div id="calbody"><div class="loading-cal">⏳ 데이터 불러오는 중...</div></div>
+  <div id="calbody"><div style="text-align:center;padding:4rem;color:#aaa;font-size:14px">⏳ 데이터 불러오는 중...</div></div>
 </div>
 </div>
 
@@ -188,20 +192,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
-<!-- 모달 -->
+<!-- 행사 등록/수정 모달 -->
 <div class="mbg" id="mbg" onclick="if(event.target===this)closeModal()">
 <div class="modal">
   <h2 id="mtitle">행사 등록</h2>
   <div class="frow"><label>행사명</label><input type="text" id="fn" placeholder="예) 어버이날 기획전"></div>
-  <div class="frow"><label>플랫폼</label>
-    <select id="fp">
-      <option value="naver">네이버 스마트스토어</option>
-      <option value="sun">선김치몰</option>
-      <option value="coupang">쿠팡</option>
-      <option value="kakao">카카오쇼핑</option>
-      <option value="etc">기타</option>
-    </select>
-  </div>
+  <div class="frow"><label>플랫폼</label><select id="fp"></select></div>
   <div class="frow dg">
     <div><label>시작일</label><input type="date" id="fst"></div>
     <div><label>종료일</label><input type="date" id="fen"></div>
@@ -222,15 +218,122 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 </div>
 </div>
 
+<!-- 플랫폼 관리 모달 -->
+<div class="mbg" id="pmbg" onclick="if(event.target===this)closePlatModal()">
+<div class="plat-modal">
+  <h2>플랫폼 관리</h2>
+  <div class="sub">플랫폼을 자유롭게 추가·수정·삭제할 수 있어요. 변경사항은 즉시 저장돼요.</div>
+  <div class="plat-head">
+    <span>#</span><span>플랫폼명</span><span style="text-align:center">배경색</span><span style="text-align:center">글자색</span><span></span><span></span>
+  </div>
+  <div class="plat-list" id="plat-list"></div>
+  <div style="border-top:1px solid #eee;padding-top:0.875rem;margin-top:0.25rem">
+    <div style="font-size:12px;color:#888;font-weight:500;margin-bottom:6px">새 플랫폼 추가</div>
+    <div class="plat-add-row">
+      <input type="text" id="new-plat-name" placeholder="플랫폼명 (예: 티몬)">
+      <input type="color" id="new-plat-bg" value="#E6F1FB" title="배경색">
+      <input type="color" id="new-plat-tc" value="#0C447C" title="글자색">
+      <button class="btn-plat-add" onclick="addPlat()">+ 추가</button>
+    </div>
+  </div>
+  <div class="mbtns" style="margin-top:1rem">
+    <button class="bcl" onclick="closePlatModal()">닫기</button>
+    <button class="bsv" onclick="savePlats()">저장</button>
+  </div>
+</div>
+</div>
+
 <script>
 const GAS_URL='https://script.google.com/macros/s/AKfycbxAW-hsytkEi11EDac-oHZV5_KEVIwpMnI7tpDd4uPyjbHVq1MGR37RctU8cMxcoiYMOA/exec';
-const PL={naver:'네이버',sun:'선김치몰',coupang:'쿠팡',kakao:'카카오쇼핑',etc:'기타'};
-const PCL={naver:'cn',sun:'cs',coupang:'cc',kakao:'ck',etc:'ce'};
-const PBG={naver:'#E6F1FB',sun:'#EAF3DE',coupang:'#FAECE7',kakao:'#FAEEDA',etc:'#F1EFE8'};
-const PTC={naver:'#0C447C',sun:'#27500A',coupang:'#712B13',kakao:'#633806',etc:'#444'};
 
+// 기본 플랫폼 (로컬스토리지에 없으면 사용)
+const DEFAULT_PLATS=[
+  {id:'naver', name:'네이버 스마트스토어', bg:'#E6F1FB', tc:'#0C447C'},
+  {id:'sun',   name:'선김치몰',            bg:'#EAF3DE', tc:'#27500A'},
+  {id:'coupang',name:'쿠팡',              bg:'#FAECE7', tc:'#712B13'},
+  {id:'kakao', name:'카카오쇼핑',          bg:'#FAEEDA', tc:'#633806'},
+  {id:'wemake',name:'위메프',             bg:'#FBEAF0', tc:'#72243E'},
+  {id:'tmon',  name:'티몬',              bg:'#F1EFE8', tc:'#444441'},
+  {id:'11st',  name:'11번가',            bg:'#FCEBEB', tc:'#791F1F'},
+  {id:'etc',   name:'기타',              bg:'#F1EFE8', tc:'#444441'},
+];
+
+let plats=[];
 let evs=[],curP='all',curY=new Date().getFullYear(),curM=new Date().getMonth(),editId=null,srchQ='',srchIds=new Set();
 
+/* ── 플랫폼 로드/저장 ── */
+function loadPlats(){
+  const saved=localStorage.getItem('sunkimchi_plats');
+  plats=saved?JSON.parse(saved):JSON.parse(JSON.stringify(DEFAULT_PLATS));
+}
+function savePlatsLocal(){localStorage.setItem('sunkimchi_plats',JSON.stringify(plats));}
+
+function platById(id){return plats.find(p=>p.id===id)||{name:id,bg:'#F1EFE8',tc:'#444'};}
+
+/* ── 플랫폼 관리 모달 ── */
+function openPlatModal(){
+  renderPlatList();
+  document.getElementById('pmbg').classList.add('open');
+}
+function closePlatModal(){document.getElementById('pmbg').classList.remove('open');}
+
+function renderPlatList(){
+  const list=document.getElementById('plat-list');
+  list.innerHTML=plats.map((p,i)=>`
+    <div class="plat-item" data-idx="${i}">
+      <span class="pi-idx">${i+1}</span>
+      <input type="text" value="${p.name}" placeholder="플랫폼명" onchange="plats[${i}].name=this.value">
+      <input type="color" value="${p.bg}" title="배경색" onchange="plats[${i}].bg=this.value" style="height:32px">
+      <input type="color" value="${p.tc}" title="글자색" onchange="plats[${i}].tc=this.value" style="height:32px">
+      <span style="font-size:11px;padding:2px 6px;border-radius:10px;background:${p.bg};color:${p.tc};white-space:nowrap;text-align:center;line-height:28px">${p.name.slice(0,3)}</span>
+      <button class="pi-del" onclick="removePlat(${i})">×</button>
+    </div>`).join('');
+}
+
+function addPlat(){
+  const name=document.getElementById('new-plat-name').value.trim();
+  if(!name){alert('플랫폼명을 입력해주세요.');return;}
+  const bg=document.getElementById('new-plat-bg').value;
+  const tc=document.getElementById('new-plat-tc').value;
+  const id='plat_'+Date.now();
+  plats.push({id,name,bg,tc});
+  document.getElementById('new-plat-name').value='';
+  renderPlatList();
+}
+
+function removePlat(i){
+  if(plats.length<=1){alert('최소 1개의 플랫폼이 필요해요.');return;}
+  if(!confirm(`"${plats[i].name}" 플랫폼을 삭제할까요?`))return;
+  plats.splice(i,1);
+  renderPlatList();
+}
+
+function savePlats(){
+  // 현재 입력값 동기화
+  document.querySelectorAll('#plat-list .plat-item').forEach((el,i)=>{
+    plats[i].name=el.querySelector('input[type=text]').value.trim()||plats[i].name;
+    plats[i].bg=el.querySelector('input[type=color]:nth-of-type(1)').value;
+    plats[i].tc=el.querySelector('input[type=color]:nth-of-type(2)').value;
+  });
+  savePlatsLocal();
+  closePlatModal();
+  renderFilters();
+  render();
+  alert('플랫폼이 저장됐어요!');
+}
+
+/* ── 필터 렌더 ── */
+function renderFilters(){
+  const f=document.getElementById('filters');
+  let html=`<button class="pill${curP==='all'?' on':''}" onclick="setP(this,'all')" style="${curP==='all'?'background:#EEEDFE;color:#3C3489;border-color:#534AB7':''}">전체</button>`;
+  plats.forEach(p=>{
+    const on=curP===p.id;
+    html+=`<button class="pill${on?' on':''}" onclick="setP(this,'${p.id}')" style="${on?`background:${p.bg};color:${p.tc};border-color:${p.tc}`:''}">${p.name}</button>`;
+  });
+  f.innerHTML=html;
+}
+
+/* ── Sheets 연동 ── */
 function setSyncStatus(state,msg){
   document.getElementById('sdot').className='sync-dot '+state;
   document.getElementById('smsg').textContent=msg;
@@ -256,10 +359,8 @@ async function postToSheets(action,event){
   return res.json();
 }
 
-function hl(t,q){
-  if(!q)return t;
-  return t.replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<span class="sr-hl">$1</span>');
-}
+/* ── 검색 ── */
+function hl(t,q){if(!q)return t;return t.replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<span class="sr-hl">$1</span>');}
 function doSearch(v){
   srchQ=v.trim();
   document.getElementById('scl').style.display=srchQ?'block':'none';
@@ -272,7 +373,8 @@ function doSearch(v){
   document.getElementById('srp').style.display='block';
   if(!found.length){document.getElementById('srl').innerHTML='<div class="sr-empty">검색 결과가 없습니다.</div>';renderCal();return;}
   document.getElementById('srl').innerHTML=found.map(e=>{
-    const badge=`<span style="font-size:11px;padding:2px 8px;border-radius:20px;background:${PBG[e.plat]};color:${PTC[e.plat]};font-weight:500">${PL[e.plat]}</span>`;
+    const pl=platById(e.plat);
+    const badge=`<span style="font-size:11px;padding:2px 8px;border-radius:20px;background:${pl.bg};color:${pl.tc};font-weight:500">${pl.name}</span>`;
     const rows=e.products.map(p=>{const d=p.orig?Math.round((1-p.sale/p.orig)*100):0;return`<tr><td>${hl(p.name,srchQ)}</td><td style="text-decoration:line-through;color:#bbb">${fmt(p.orig)}</td><td style="color:#993C1D;font-weight:600">${fmt(p.sale)}</td><td style="color:#993C1D;font-size:11px">${d?d+'%':''}</td></tr>`;}).join('');
     return`<div class="sr-item"><div class="sr-top">${badge}<span class="sr-name">${hl(e.name,srchQ)}</span><span class="sr-date">${e.start} ~ ${e.end}</span></div><table class="sr-tbl"><tr><th>상품명</th><th>정가</th><th>행사가</th><th>할인율</th></tr>${rows}</table></div>`;
   }).join('');
@@ -285,7 +387,7 @@ function pad(n){return String(n).padStart(2,'0')}
 function dstr(y,m,d){return y+'-'+pad(m+1)+'-'+pad(d)}
 function today(){const d=new Date();return dstr(d.getFullYear(),d.getMonth(),d.getDate())}
 function filt(){return curP==='all'?evs:evs.filter(e=>e.plat===curP)}
-function setP(el,p){document.querySelectorAll('.pill').forEach(x=>x.classList.remove('on'));el.classList.add('on');curP=p;render();}
+function setP(el,p){curP=p;renderFilters();render();}
 function navM(d){curM+=d;if(curM<0){curM=11;curY--;}if(curM>11){curM=0;curY++;}render();}
 
 function renderMetrics(){
@@ -301,6 +403,7 @@ function renderMetrics(){
 }
 function render(){
   document.getElementById('mlabel').textContent=curY+'년 '+(curM+1)+'월';
+  renderFilters();
   renderMetrics();
   renderCal();
 }
@@ -340,14 +443,14 @@ function renderCal(){
     for(let sl=0;sl<=maxSlot;sl++){
       html+=`<div class="bar-slot" style="${sl===0?'margin-top:29px':'margin-top:2px'}">`;
       placed.filter(p=>p.slot===sl).forEach(({e,sc,ec})=>{
+        const pl=platById(e.plat);
         const isStart=e.start>=wS&&dstr(week[sc].y,week[sc].m,week[sc].d)===e.start;
         const isEnd=e.end<=wE;
         const rL=isStart?'4px':'0';const rR=isEnd?'4px':'0';
         const W=((ec-sc+1)/7*100).toFixed(2);const L=(sc/7*100).toFixed(2);
         const dimmed=srchQ&&!srchIds.has(e.id)?'dimmed':'';
         const pt=e.products.map(p=>p.name+' '+fmt(p.sale)).join(' · ');
-        const eid=JSON.stringify(String(e.id));
-        html+=`<div class="ebar ${PCL[e.plat]} ${dimmed}" style="left:calc(${L}% + 1px);width:calc(${W}% - 3px);border-radius:${rL} ${rR} ${rR} ${rL}" onclick="showPop(event,${eid})">
+        html+=`<div class="ebar ${dimmed}" style="left:calc(${L}% + 1px);width:calc(${W}% - 3px);border-radius:${rL} ${rR} ${rR} ${rL};background:${pl.bg};color:${pl.tc}" onclick="showPop(event,${JSON.stringify(String(e.id))})">
           <span class="en">${e.name}</span><span class="ep">${pt}</span>
         </div>`;
       });
@@ -357,12 +460,15 @@ function renderCal(){
   }
   document.getElementById('calbody').innerHTML=html;
 }
+
+/* ── 팝업 ── */
 function showPop(ev,id){
   closePop();
   const e=evs.find(v=>String(v.id)===String(id));if(!e)return;
+  const pl=platById(e.plat);
   const rows=e.products.map(p=>{const d=p.orig?Math.round((1-p.sale/p.orig)*100):0;return`<tr><td>${p.name}</td><td style="text-decoration:line-through;color:#bbb">${fmt(p.orig)}</td><td style="color:#993C1D;font-weight:600">${fmt(p.sale)}</td><td style="color:#993C1D;font-size:11px">${d?d+'%':''}</td></tr>`;}).join('');
   document.getElementById('pop-inner').innerHTML=`
-    <div class="pop-plat" style="background:${PBG[e.plat]};color:${PTC[e.plat]}">${PL[e.plat]}</div>
+    <div class="pop-plat" style="background:${pl.bg};color:${pl.tc}">${pl.name}</div>
     <div class="pop-name">${e.name}</div>
     <div class="pop-date">${e.start} ~ ${e.end}</div>
     <table class="pop-tbl"><tr><th>상품</th><th>정가</th><th>행사가</th><th>할인</th></tr>${rows}</table>
@@ -377,11 +483,15 @@ function showPop(ev,id){
 }
 function outPop(e){if(!document.getElementById('pop').contains(e.target))closePop();}
 function closePop(){document.getElementById('pop').style.display='none';document.removeEventListener('click',outPop);}
+
+/* ── 행사 모달 ── */
 function openModal(id){
   editId=id||null;
   document.getElementById('mtitle').textContent=id?'행사 수정':'행사 등록';
   document.getElementById('bdl').style.display=id?'block':'none';
   document.getElementById('prows').innerHTML='';
+  // 플랫폼 select 동적 생성
+  document.getElementById('fp').innerHTML=plats.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
   if(id){
     const e=evs.find(v=>String(v.id)===String(id));
     document.getElementById('fn').value=e.name;
@@ -392,7 +502,6 @@ function openModal(id){
     e.products.forEach(p=>addProd(p.name,p.orig,p.sale));
   } else {
     ['fn','fm'].forEach(i=>document.getElementById(i).value='');
-    document.getElementById('fp').value='naver';
     document.getElementById('fst').value='';document.getElementById('fen').value='';
     addProd();
   }
@@ -432,6 +541,9 @@ async function delEv(){
   try{await postToSheets('delete',{id:editId});await loadFromSheets();}
   catch{setSyncStatus('err','삭제 실패');}
 }
+
+// 초기화
+loadPlats();
 loadFromSheets();
 </script>
 </body>
