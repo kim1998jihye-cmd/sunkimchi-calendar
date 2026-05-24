@@ -8,7 +8,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f7f7f5;min-height:100vh;padding:1.5rem 2rem}
 .container{max-width:1600px;margin:0 auto;background:#fff;border-radius:16px;padding:1.75rem 2rem;box-shadow:0 2px 12px rgba(0,0,0,0.07)}
-.tabs{display:flex;gap:4px;margin-bottom:1.25rem;border-bottom:2px solid #f0f0f0;padding-bottom:0}
+.tabs{display:flex;gap:4px;margin-bottom:1.25rem;border-bottom:2px solid #f0f0f0}
 .tab{font-size:14px;font-weight:500;padding:8px 20px;border:none;background:none;color:#aaa;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px}
 .tab.on{color:#534AB7;border-bottom-color:#534AB7;font-weight:700}
 .tab-panel{display:none}.tab-panel.on{display:block}
@@ -50,38 +50,34 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .sr-tbl tr:last-child td{border:none}
 .filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:0.75rem}
 .pill{font-size:12px;padding:4px 12px;border:1px solid #ddd;border-radius:20px;background:#fff;color:#666;cursor:pointer}
-.pill:hover{background:#f5f5f3}
-.pill.on{font-weight:600}
+.pill:hover{background:#f5f5f3}.pill.on{font-weight:600}
 .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1rem}
 .metric{background:#f7f7f5;border-radius:10px;padding:0.75rem 1rem}
 .metric .lb{font-size:11px;color:#999;margin-bottom:3px}
 .metric .val{font-size:22px;font-weight:600;color:#111}
 
-/* 캘린더 핵심 구조 */
+/* 캘린더 */
 .cal-outer{border:1px solid #e0e0e0;border-radius:12px;overflow:hidden;margin-bottom:1.5rem}
 .cal-head-row{display:grid;grid-template-columns:repeat(7,1fr);background:#f7f7f5;border-bottom:1px solid #e0e0e0}
 .ch{font-size:12px;color:#999;text-align:center;padding:8px 0;font-weight:500}
 .week-wrap{position:relative;border-bottom:1px solid #e0e0e0}
 .week-wrap:last-child{border-bottom:none}
-/* week-cells: grid이므로 height를 직접 지정해야 늘어남 */
-.week-cells{display:grid;grid-template-columns:repeat(7,1fr);width:100%;align-items:stretch}
+.week-cells{display:grid;grid-template-columns:repeat(7,1fr)}
 .day-cell{border-right:1px solid #e0e0e0;padding:4px 3px 5px 4px;background:#fff}
 .day-cell:last-child{border-right:none}
 .day-cell.other{background:#fafafa}
 .day-cell.sun .dn{color:#E24B4A}
 .dn{font-size:12px;color:#999;display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%}
 .day-cell.today .dn{background:#534AB7;color:#fff;font-weight:600}
-/* bars-layer: absolute로 날짜 위에 겹침 */
-.bars-layer{position:absolute;top:0;left:0;right:0;pointer-events:none}
+.bars-layer{position:absolute;top:0;left:0;right:0;pointer-events:none;overflow:hidden}
 .bar-slot{position:relative;pointer-events:none}
-.bar-slot:first-child{margin-top:28px}
-.bar-slot+.bar-slot{margin-top:2px}
-.ebar{position:absolute;border-radius:4px;padding:2px 6px;cursor:pointer;overflow:hidden;pointer-events:auto;display:flex;flex-direction:column;justify-content:flex-start;gap:1px}
+.ebar{position:absolute;height:28px;border-radius:4px;padding:1px 6px;cursor:pointer;overflow:hidden;pointer-events:auto;display:flex;flex-direction:column;justify-content:center}
 .ebar:hover{filter:brightness(0.93)}
 .ebar.dimmed{opacity:0.18}
 .en{font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.4}
-.ep{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;opacity:0.85;display:block}
+.ep{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;opacity:0.85}
 
+/* 지원사업 목록 */
 .support-list-wrap{margin-top:0.5rem}
 .support-list-title{font-size:14px;font-weight:600;color:#111;margin-bottom:0.75rem;display:flex;align-items:center;gap:8px}
 .support-tbl{width:100%;border-collapse:collapse;font-size:13px}
@@ -93,6 +89,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .badge-done{background:#EEEDFE;color:#3C3489}
 .badge-pending{background:#FEF3E2;color:#7A4800}
 .deadline-badge{font-size:10px;padding:2px 6px;border-radius:4px;background:#FCEBEB;color:#A32D2D;font-weight:600;margin-left:4px}
+
+/* 팝업 */
 .pop-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:290;display:none}
 .pop{position:fixed;z-index:300;background:#fff;border-radius:16px;width:min(520px,92vw);max-height:82vh;display:none;box-shadow:0 8px 40px rgba(0,0,0,0.18);overflow:hidden;flex-direction:column;top:50%;left:50%;transform:translate(-50%,-50%)}
 .pop-header{padding:1.2rem 1.4rem 0.875rem;border-bottom:1px solid #f0f0f0;flex-shrink:0}
@@ -140,6 +138,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .spop-btn-save:hover{background:#3C3489}
 .spop-btn-close{font-size:13px;padding:7px 18px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#999;cursor:pointer}
 .spop-btn-close:hover{background:#f5f5f3}
+
+/* 모달 */
 .mbg{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;align-items:center;justify-content:center;z-index:400}
 .mbg.open{display:flex}
 .modal{background:#fff;border-radius:14px;padding:1.5rem;width:min(500px,94vw);max-height:88vh;overflow-y:auto}
@@ -258,7 +258,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 </div>
 
 <div class="pop-overlay" id="pop-overlay" onclick="closePop();closeSpop()"></div>
-
 <div class="pop" id="pop">
   <div class="pop-header" id="pop-header"></div>
   <div class="pop-body" id="pop-body"></div>
@@ -267,7 +266,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <button class="pop-btn-close" onclick="closePop()">닫기</button>
   </div>
 </div>
-
 <div class="spop" id="spop">
   <div class="spop-header" id="spop-header"></div>
   <div class="spop-body" id="spop-body"></div>
@@ -372,6 +370,8 @@ const DEFAULT_PLATS=[
   {id:'11st',name:'11번가',bg:'#FCEBEB',tc:'#791F1F'},
   {id:'etc',name:'기타',bg:'#F1EFE8',tc:'#444441'},
 ];
+const BAR_H=28, BAR_GAP=2, DATE_H=28, PAD=10;
+
 let plats=[],evs=[],supports=[];
 let curP='all';
 let eY=new Date().getFullYear(),eM=new Date().getMonth();
@@ -401,7 +401,6 @@ function switchTab(name,el){
   el.classList.add('on');
   document.getElementById('tab-'+name).classList.add('on');
 }
-
 function setSyncStatus(s,m){document.getElementById('sdot').className='sync-dot '+s;document.getElementById('smsg').textContent=m;}
 async function gasGet(p=''){const r=await fetch(GAS+'?t='+Date.now()+(p?'&'+p:''));return r.json();}
 async function gasPost(b){const r=await fetch(GAS,{method:'POST',body:JSON.stringify(b)});return r.json();}
@@ -416,7 +415,7 @@ async function loadAll(){
     const now=new Date();
     setSyncStatus('ok','연동 완료 · '+now.getHours()+':'+pad(now.getMinutes())+' 기준');
     renderAll();
-  }catch(e){setSyncStatus('err','연결 실패');renderAll();}
+  }catch(e){setSyncStatus('err','연결 실패 — 새로고침을 눌러주세요');renderAll();}
 }
 
 function renderAll(){renderFilters();renderEMetrics();renderECal();renderSMetrics();renderSCal();renderSList();}
@@ -457,7 +456,7 @@ function renderSCal(){
   document.getElementById('s-calbody').innerHTML=buildCal(sY,sM,sEvs,'support');
 }
 
-// ── 핵심: 캘린더 빌더 ──
+// ── 캘린더 빌더 ──
 function buildCal(Y,M,evList,type){
   const firstDay=new Date(Y,M,1).getDay();
   const dim=new Date(Y,M+1,0).getDate();
@@ -467,12 +466,15 @@ function buildCal(Y,M,evList,type){
   for(let i=firstDay-1;i>=0;i--){const pm=M===0?11:M-1,py=M===0?Y-1:Y;cells.push({y:py,m:pm,d:pdim-i,other:true});}
   for(let d=1;d<=dim;d++)cells.push({y:Y,m:M,d,other:false});
   while(cells.length%7!==0){const nm=M===11?0:M+1,ny=M===11?Y+1:Y;cells.push({y:ny,m:nm,d:cells.length-firstDay-dim+1,other:true});}
+
   let html='';
   for(let w=0;w<cells.length/7;w++){
     const week=cells.slice(w*7,w*7+7);
     const wS=dstr(week[0].y,week[0].m,week[0].d);
     const wE=dstr(week[6].y,week[6].m,week[6].d);
     const wev=evList.filter(e=>e.start<=wE&&e.end>=wS).sort((a,b)=>a.start.localeCompare(b.start)||(a.end<b.end?1:-1));
+
+    // 슬롯 배정
     const placed=[];
     wev.forEach(e=>{
       let sc=0,ec=6;
@@ -480,35 +482,27 @@ function buildCal(Y,M,evList,type){
       if(e.start<wS)sc=0;if(e.end>wE)ec=6;
       sc=Math.max(0,sc);ec=Math.min(6,ec);
       let slot=0;
-      // 같은 슬롯에서 열(column) 범위가 겹치는지 확인
       while(placed.some(p=>p.slot===slot&&!(p.ec<sc||p.sc>ec)))slot++;
       placed.push({e,sc,ec,slot});
     });
-    // 셀별 최대 슬롯 계산
-    const slotPerCell=Array(7).fill(-1);
-    placed.forEach(({sc,ec,slot})=>{
-      for(let ci=sc;ci<=ec;ci++) slotPerCell[ci]=Math.max(slotPerCell[ci],slot);
-    });
-    const maxSlot=Math.max(...slotPerCell);
-    const topPad=28,slotGap=2,bottomPad=8;
-    const getBarH=e=>{
-      if(type!=='event')return 28;
-      const productCount=Math.max(1,(e.products||[]).length);
-      return 18+(productCount*14)+4;
-    };
-    const slotHeights=Array(maxSlot+1).fill(28);
-    placed.forEach(({e,slot})=>{slotHeights[slot]=Math.max(slotHeights[slot],getBarH(e));});
-    const barsH=maxSlot>=0?topPad+slotHeights.reduce((sum,h)=>sum+h,0)+(slotHeights.length-1)*slotGap+bottomPad:0;
-    const rowH=Math.max(80,barsH);
-    // min-height 사용 (height 고정 시 overflow로 잘림 발생)
+
+    // 핵심: 각 셀별 실제 바 개수 계산 → 가장 많은 셀 기준으로 rowH 결정
+    const barsPerCell=Array(7).fill(0);
+    placed.forEach(({sc,ec})=>{for(let ci=sc;ci<=ec;ci++)barsPerCell[ci]++;});
+    const maxBars=Math.max(0,...barsPerCell);
+    const maxSlot=placed.length?Math.max(...placed.map(p=>p.slot)):-1;
+    const rowH=Math.max(80, DATE_H + maxBars*(BAR_H+BAR_GAP) + PAD);
+
     html+=`<div class="week-wrap" style="min-height:${rowH}px"><div class="week-cells" style="min-height:${rowH}px">`;
     week.forEach((c,ci)=>{
       const s=dstr(c.y,c.m,c.d);
       html+=`<div class="day-cell${c.other?' other':''}${s===t?' today':''}${ci===0?' sun':''}" style="min-height:${rowH}px"><div class="dn">${c.d}</div></div>`;
     });
-    html+=`</div><div class="bars-layer" style="min-height:${rowH}px">`;
+    html+=`</div><div class="bars-layer" style="height:${rowH}px">`;
+
     for(let sl=0;sl<=maxSlot;sl++){
-      html+=`<div class="bar-slot" style="height:${slotHeights[sl]}px;margin-top:${sl===0?topPad:slotGap}px">`;
+      const slotTop=DATE_H+sl*(BAR_H+BAR_GAP);
+      html+=`<div class="bar-slot" style="position:absolute;top:${slotTop}px;left:0;right:0;height:${BAR_H}px">`;
       placed.filter(p=>p.slot===sl).forEach(({e,sc,ec})=>{
         const isStart=e.start>=wS&&dstr(week[sc].y,week[sc].m,week[sc].d)===e.start;
         const isEnd=e.end<=wE;
@@ -523,13 +517,12 @@ function buildCal(Y,M,evList,type){
         }
         const dimmed=type==='event'&&srchQ&&!srchIds.has(e.id)?'dimmed':'';
         const onclick=type==='event'?`showPop(event,'${String(e.id).replace(/'/g,"\\'")}')`:  `showSpop(event,'${String(e.id).replace(/'/g,"\\'")}')`;
-        const barH=getBarH(e);
-        const productHtml=type==='event'&&e.products?e.products.map(p=>`<span class="ep">${p.name} ${fmt(p.sale)}</span>`).join(''):'';
-        const deadlineBar=type==='support'&&isEnd&&!e._expired?`<span style="position:absolute;right:0;top:0;bottom:0;width:5px;background:rgba(0,0,0,0.2);border-radius:0 ${rR} ${rR} 0"></span>`:'';
-        html+=`<div class="ebar ${dimmed}" style="height:${barH}px;left:calc(${L}% + 1px);width:calc(${W}% - 3px);border-radius:${rL} ${rR} ${rR} ${rL};background:${bg};color:${tc};position:relative" onclick="${onclick}">
+        const pt=type==='event'&&e.products?e.products.map(p=>p.name+' '+fmt(p.sale)).join(' · '):'';
+        const dlBar=type==='support'&&isEnd&&!e._expired?`<span style="position:absolute;right:0;top:0;bottom:0;width:5px;background:rgba(0,0,0,0.2);border-radius:0 ${rR} ${rR} 0"></span>`:'';
+        html+=`<div class="ebar ${dimmed}" style="left:calc(${L}% + 1px);width:calc(${W}% - 3px);height:${BAR_H}px;border-radius:${rL} ${rR} ${rR} ${rL};background:${bg};color:${tc};position:absolute" onclick="${onclick}">
           <span class="en">${label}${type==='support'&&isEnd&&!e._expired?' ⚠':''}${type==='support'&&e._done?' ✓':''}</span>
-          ${productHtml}
-          ${deadlineBar}
+          ${type==='event'?`<span class="ep">${pt}</span>`:''}
+          ${dlBar}
         </div>`;
       });
       html+=`</div>`;
@@ -574,8 +567,7 @@ function closePop(){document.getElementById('pop').style.display='none';document
 function showSpop(ev,rowIndex){
   ev.stopPropagation();
   const s=supports.find(x=>String(x._rowIndex)===String(rowIndex));if(!s)return;
-  curSpopIdx=s._rowIndex;
-  spopDocs=JSON.parse(JSON.stringify(s['필요서류']||[]));
+  curSpopIdx=s._rowIndex;spopDocs=JSON.parse(JSON.stringify(s['필요서류']||[]));
   const expired=isExpired(s['신청마감일']),urgent=isUrgent(s['신청마감일'])&&!expired;
   document.getElementById('spop-header').innerHTML=`
     <div class="spop-title">${s['지원사업명']}</div>
@@ -596,8 +588,7 @@ function toggleDoc(i){
   spopDocs[i].done=!spopDocs[i].done;
   document.getElementById('doc-item-'+i).classList.toggle('checked',spopDocs[i].done);
   document.getElementById('doc-cb-'+i).textContent=spopDocs[i].done?'✓':'';
-  const allDone=spopDocs.every(d=>d.done)&&spopDocs.length>0;
-  document.getElementById('all-done-msg').style.display=allDone?'block':'none';
+  document.getElementById('all-done-msg').style.display=spopDocs.every(d=>d.done)&&spopDocs.length>0?'block':'none';
 }
 async function saveSupport(){
   if(!curSpopIdx)return;
@@ -675,8 +666,7 @@ async function saveSup(){
   const oldDocs=editSupRowIndex?((supports.find(x=>x._rowIndex===editSupRowIndex)||{})['필요서류']||[]):[];
   const docs=[];
   document.querySelectorAll('#sf-doc-rows .doc-name-input').forEach(inp=>{
-    const nm=inp.value.trim();
-    if(nm){const ex=oldDocs.find(d=>d.name===nm);docs.push({name:nm,done:ex?ex.done:false});}
+    const nm=inp.value.trim();if(nm){const ex=oldDocs.find(d=>d.name===nm);docs.push({name:nm,done:ex?ex.done:false});}
   });
   const s={'신청시작일':document.getElementById('sf-start').value,'신청마감일':end,'지원사업명':name,'사업자명':document.getElementById('sf-biz').value.trim(),'주관단체':document.getElementById('sf-org').value.trim(),'지원쇼핑몰':document.getElementById('sf-mall').value.trim(),'지원사항':document.getElementById('sf-benefit').value.trim(),'지원상품':document.getElementById('sf-product').value.trim(),'대행여부':document.getElementById('sf-agency').value,'담당자명':document.getElementById('sf-manager').value.trim(),'필요서류':docs,'비고':document.getElementById('sf-memo').value.trim()};
   closeSModal();setSyncStatus('loading','저장 중...');
@@ -707,8 +697,7 @@ function openModal(id){
     e.products.forEach(p=>addProd(p.name,p.orig,p.sale));
   } else {
     ['fn','fm'].forEach(i=>document.getElementById(i).value='');
-    document.getElementById('fst').value='';document.getElementById('fen').value='';
-    addProd();
+    document.getElementById('fst').value='';document.getElementById('fen').value='';addProd();
   }
   document.getElementById('mbg').classList.add('open');
 }
@@ -720,8 +709,7 @@ function addProd(name='',orig='',sale=''){
 }
 async function saveEv(){
   const name=document.getElementById('fn').value.trim(),plat=document.getElementById('fp').value;
-  const start=document.getElementById('fst').value,end=document.getElementById('fen').value;
-  const memo=document.getElementById('fm').value.trim();
+  const start=document.getElementById('fst').value,end=document.getElementById('fen').value,memo=document.getElementById('fm').value.trim();
   if(!name||!start||!end){alert('행사명, 시작일, 종료일을 입력해주세요.');return;}
   const products=[];
   document.querySelectorAll('#prows .pr').forEach(r=>{
@@ -756,12 +744,9 @@ function renderPlatList(){
 }
 function updatePreview(i){const el=document.getElementById('prev-'+i);if(el){el.style.background=plats[i].bg;el.style.color=plats[i].tc;el.textContent=plats[i].name.slice(0,4);}}
 function addPlatRow(){
-  const name=document.getElementById('new-plat-name').value.trim();
-  if(!name){alert('플랫폼명을 입력해주세요.');return;}
+  const name=document.getElementById('new-plat-name').value.trim();if(!name){alert('플랫폼명을 입력해주세요.');return;}
   const bg=document.getElementById('new-plat-bg').value,tc=document.getElementById('new-plat-tc').value;
-  plats.push({id:'plat_'+Date.now(),name,bg,tc});
-  document.getElementById('new-plat-name').value='';
-  renderPlatList();
+  plats.push({id:'plat_'+Date.now(),name,bg,tc});document.getElementById('new-plat-name').value='';renderPlatList();
 }
 function removePlatRow(i){
   if(plats.length<=1){alert('최소 1개의 플랫폼이 필요해요.');return;}
