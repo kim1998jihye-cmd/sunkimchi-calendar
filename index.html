@@ -64,8 +64,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .week-wrap{position:relative;border-bottom:1px solid #e0e0e0}
 .week-wrap:last-child{border-bottom:none}
 /* week-cells: grid이므로 height를 직접 지정해야 늘어남 */
-.week-cells{display:grid;grid-template-columns:repeat(7,1fr);width:100%}
-.day-cell{border-right:1px solid #e0e0e0;padding:4px 3px 5px 4px;background:#fff;overflow:hidden}
+.week-cells{display:grid;grid-template-columns:repeat(7,1fr);width:100%;align-items:stretch}
+.day-cell{border-right:1px solid #e0e0e0;padding:4px 3px 5px 4px;background:#fff}
 .day-cell:last-child{border-right:none}
 .day-cell.other{background:#fafafa}
 .day-cell.sun .dn{color:#E24B4A}
@@ -484,21 +484,20 @@ function buildCal(Y,M,evList,type){
       while(placed.some(p=>p.slot===slot&&!(p.ec<sc||p.sc>ec)))slot++;
       placed.push({e,sc,ec,slot});
     });
-    // 실제 각 셀별로 최대 슬롯 수 계산 (셀마다 다를 수 있음)
+    // 셀별 최대 슬롯 계산
     const slotPerCell=Array(7).fill(-1);
     placed.forEach(({sc,ec,slot})=>{
       for(let ci=sc;ci<=ec;ci++) slotPerCell[ci]=Math.max(slotPerCell[ci],slot);
     });
     const maxSlot=Math.max(...slotPerCell);
-    // 핵심: 날짜숫자 28px + 슬롯 수 × 32px + 여백 8px
     const rowH=Math.max(80,28+(maxSlot+1)*32+8);
-    // week-wrap, week-cells, day-cell 모두 동일한 height 적용
-    html+=`<div class="week-wrap" style="height:${rowH}px"><div class="week-cells" style="height:${rowH}px">`;
+    // min-height 사용 (height 고정 시 overflow로 잘림 발생)
+    html+=`<div class="week-wrap" style="min-height:${rowH}px"><div class="week-cells" style="min-height:${rowH}px">`;
     week.forEach((c,ci)=>{
       const s=dstr(c.y,c.m,c.d);
-      html+=`<div class="day-cell${c.other?' other':''}${s===t?' today':''}${ci===0?' sun':''}" style="height:${rowH}px"><div class="dn">${c.d}</div></div>`;
+      html+=`<div class="day-cell${c.other?' other':''}${s===t?' today':''}${ci===0?' sun':''}" style="min-height:${rowH}px"><div class="dn">${c.d}</div></div>`;
     });
-    html+=`</div><div class="bars-layer" style="height:${rowH}px">`;
+    html+=`</div><div class="bars-layer" style="min-height:${rowH}px">`;
     for(let sl=0;sl<=maxSlot;sl++){
       html+=`<div class="bar-slot" style="margin-top:${sl===0?28:2}px">`;
       placed.filter(p=>p.slot===sl).forEach(({e,sc,ec})=>{
