@@ -74,11 +74,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 /* bars-layer: absolute로 날짜 위에 겹침 */
 .bars-layer{position:absolute;top:0;left:0;right:0;pointer-events:none}
 .bar-slot{position:relative;pointer-events:none}
-.ebar{position:absolute;height:28px;border-radius:4px;padding:1px 6px;cursor:pointer;overflow:hidden;pointer-events:auto;display:flex;flex-direction:column;justify-content:center}
+.bar-slot:first-child{margin-top:28px}
+.bar-slot+.bar-slot{margin-top:2px}
+.ebar{position:absolute;border-radius:4px;padding:2px 6px;cursor:pointer;overflow:hidden;pointer-events:auto;display:flex;flex-direction:column;justify-content:flex-start;gap:1px}
 .ebar:hover{filter:brightness(0.93)}
 .ebar.dimmed{opacity:0.18}
 .en{font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.4}
-.ep{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;opacity:0.85}
+.ep{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;opacity:0.85;display:block}
 
 .support-list-wrap{margin-top:0.5rem}
 .support-list-title{font-size:14px;font-weight:600;color:#111;margin-bottom:0.75rem;display:flex;align-items:center;gap:8px}
@@ -482,18 +484,31 @@ function buildCal(Y,M,evList,type){
       while(placed.some(p=>p.slot===slot&&!(p.ec<sc||p.sc>ec)))slot++;
       placed.push({e,sc,ec,slot});
     });
-    // 슬롯별 높이 계산 (행사 바 28px 고정)
-    const BAR_H=28, BAR_GAP=2, DATE_H=28, PADDING=8;
-    const slotCount=maxSlot+1;
-    const rowH=Math.max(80, DATE_H + slotCount*(BAR_H+BAR_GAP) + PADDING);
+    // 셀별 최대 슬롯 계산
+    const slotPerCell=Array(7).fill(-1);
+    placed.forEach(({sc,ec,slot})=>{
+      for(let ci=sc;ci<=ec;ci++) slotPerCell[ci]=Math.max(slotPerCell[ci],slot);
+    });
+    const maxSlot=Math.max(...slotPerCell);
+    const topPad=28,slotGap=2,bottomPad=8;
+    const getBarH=e=>{
+      if(type!=='event')return 28;
+      const productCount=Math.max(1,(e.products||[]).length);
+      return 18+(productCount*14)+4;
+    };
+    const slotHeights=Array(maxSlot+1).fill(28);
+    placed.forEach(({e,slot})=>{slotHeights[slot]=Math.max(slotHeights[slot],getBarH(e));});
+    const barsH=maxSlot>=0?topPad+slotHeights.reduce((sum,h)=>sum+h,0)+(slotHeights.length-1)*slotGap+bottomPad:0;
+    const rowH=Math.max(80,barsH);
+    // min-height 사용 (height 고정 시 overflow로 잘림 발생)
     html+=`<div class="week-wrap" style="min-height:${rowH}px"><div class="week-cells" style="min-height:${rowH}px">`;
     week.forEach((c,ci)=>{
       const s=dstr(c.y,c.m,c.d);
       html+=`<div class="day-cell${c.other?' other':''}${s===t?' today':''}${ci===0?' sun':''}" style="min-height:${rowH}px"><div class="dn">${c.d}</div></div>`;
     });
-    html+=`</div><div class="bars-layer" style="height:${rowH}px">`;
+    html+=`</div><div class="bars-layer" style="min-height:${rowH}px">`;
     for(let sl=0;sl<=maxSlot;sl++){
-      html+=`<div class="bar-slot" style="height:${BAR_H}px;margin-top:${sl===0?DATE_H:BAR_GAP}px">`;
+      html+=`<div class="bar-slot" style="height:${slotHeights[sl]}px;margin-top:${sl===0?topPad:slotGap}px">`;
       placed.filter(p=>p.slot===sl).forEach(({e,sc,ec})=>{
         const isStart=e.start>=wS&&dstr(week[sc].y,week[sc].m,week[sc].d)===e.start;
         const isEnd=e.end<=wE;
@@ -508,11 +523,12 @@ function buildCal(Y,M,evList,type){
         }
         const dimmed=type==='event'&&srchQ&&!srchIds.has(e.id)?'dimmed':'';
         const onclick=type==='event'?`showPop(event,'${String(e.id).replace(/'/g,"\\'")}')`:  `showSpop(event,'${String(e.id).replace(/'/g,"\\'")}')`;
-        const pt=type==='event'&&e.products?e.products.map(p=>p.name+' '+fmt(p.sale)).join(' · '):'';
+        const barH=getBarH(e);
+        const productHtml=type==='event'&&e.products?e.products.map(p=>`<span class="ep">${p.name} ${fmt(p.sale)}</span>`).join(''):'';
         const deadlineBar=type==='support'&&isEnd&&!e._expired?`<span style="position:absolute;right:0;top:0;bottom:0;width:5px;background:rgba(0,0,0,0.2);border-radius:0 ${rR} ${rR} 0"></span>`:'';
-        html+=`<div class="ebar ${dimmed}" style="left:calc(${L}% + 1px);width:calc(${W}% - 3px);border-radius:${rL} ${rR} ${rR} ${rL};background:${bg};color:${tc};position:relative" onclick="${onclick}">
+        html+=`<div class="ebar ${dimmed}" style="height:${barH}px;left:calc(${L}% + 1px);width:calc(${W}% - 3px);border-radius:${rL} ${rR} ${rR} ${rL};background:${bg};color:${tc};position:relative" onclick="${onclick}">
           <span class="en">${label}${type==='support'&&isEnd&&!e._expired?' ⚠':''}${type==='support'&&e._done?' ✓':''}</span>
-          ${type==='event'?`<span class="ep">${pt}</span>`:''}
+          ${productHtml}
           ${deadlineBar}
         </div>`;
       });
