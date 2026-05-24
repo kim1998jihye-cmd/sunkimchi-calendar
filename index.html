@@ -623,7 +623,7 @@ function buildCal(Y,M,evList,type){
     });
     const maxSlot=placed.length?Math.max(...placed.map(p=>p.slot)):-1;
     const cellH=Math.max(72,29+(maxSlot+1)*32+6);
-    html+=`<div class="week-wrap"><div class="week-cells">`;
+    html+=`<div class="week-wrap" style="min-height:${cellH}px"><div class="week-cells">`;
     week.forEach((c,ci)=>{
       const s=dstr(c.y,c.m,c.d);
       html+=`<div class="day-cell${c.other?' other':''}${s===t?' today':''}${ci===0?' sun':''}" style="min-height:${cellH}px"><div class="dn">${c.d}</div></div>`;
