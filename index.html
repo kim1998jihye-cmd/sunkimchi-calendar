@@ -8,14 +8,10 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f7f7f5;min-height:100vh;padding:1.5rem 2rem}
 .container{max-width:1600px;margin:0 auto;background:#fff;border-radius:16px;padding:1.75rem 2rem;box-shadow:0 2px 12px rgba(0,0,0,0.07)}
-
-/* 탭 */
 .tabs{display:flex;gap:4px;margin-bottom:1.25rem;border-bottom:2px solid #f0f0f0;padding-bottom:0}
 .tab{font-size:14px;font-weight:500;padding:8px 20px;border:none;background:none;color:#aaa;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px}
 .tab.on{color:#534AB7;border-bottom-color:#534AB7;font-weight:700}
 .tab-panel{display:none}.tab-panel.on{display:block}
-
-/* 공통 상단바 */
 .topbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:0.875rem}
 .topbar h2{font-size:17px;font-weight:600;color:#111;flex:1}
 .btn-primary{font-size:13px;padding:7px 16px;border:1px solid #534AB7;border-radius:8px;background:#534AB7;color:#CECBF6;cursor:pointer}
@@ -32,8 +28,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .sync-dot.loading{background:#BA7517;animation:pulse 1s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
 .btn-sync{font-size:12px;padding:3px 10px;border:1px solid #ddd;border-radius:6px;background:#fff;color:#555;cursor:pointer}
-
-/* 검색 */
 .search-bar{display:flex;align-items:center;gap:8px;margin-bottom:0.75rem}
 .search-wrap{position:relative;flex:1;max-width:360px}
 .search-wrap input{width:100%;font-size:13px;padding:7px 30px 7px 32px;border:1px solid #ddd;border-radius:8px;outline:none}
@@ -54,35 +48,33 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .sr-tbl th{color:#999;font-weight:400;text-align:left;padding:3px 8px 3px 0;border-bottom:1px solid #eee}
 .sr-tbl td{padding:4px 8px 4px 0;border-bottom:1px solid #eee;color:#111}
 .sr-tbl tr:last-child td{border:none}
-
-/* 필터 */
 .filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:0.75rem}
 .pill{font-size:12px;padding:4px 12px;border:1px solid #ddd;border-radius:20px;background:#fff;color:#666;cursor:pointer}
 .pill:hover{background:#f5f5f3}
 .pill.on{font-weight:600}
-
-/* 지표 */
 .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1rem}
 .metric{background:#f7f7f5;border-radius:10px;padding:0.75rem 1rem}
 .metric .lb{font-size:11px;color:#999;margin-bottom:3px}
 .metric .val{font-size:22px;font-weight:600;color:#111}
 
-/* 캘린더 */
+/* 캘린더 핵심 구조 */
 .cal-outer{border:1px solid #e0e0e0;border-radius:12px;overflow:hidden;margin-bottom:1.5rem}
 .cal-head-row{display:grid;grid-template-columns:repeat(7,1fr);background:#f7f7f5;border-bottom:1px solid #e0e0e0}
 .ch{font-size:12px;color:#999;text-align:center;padding:8px 0;font-weight:500}
 .week-wrap{position:relative;border-bottom:1px solid #e0e0e0}
 .week-wrap:last-child{border-bottom:none}
-.week-cells{display:grid;grid-template-columns:repeat(7,1fr)}
-.day-cell{border-right:1px solid #e0e0e0;padding:4px 3px 5px 4px;background:#fff}
+/* week-cells: grid이므로 height를 직접 지정해야 늘어남 */
+.week-cells{display:grid;grid-template-columns:repeat(7,1fr);width:100%}
+.day-cell{border-right:1px solid #e0e0e0;padding:4px 3px 5px 4px;background:#fff;overflow:hidden}
 .day-cell:last-child{border-right:none}
 .day-cell.other{background:#fafafa}
 .day-cell.sun .dn{color:#E24B4A}
 .dn{font-size:12px;color:#999;display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%}
 .day-cell.today .dn{background:#534AB7;color:#fff;font-weight:600}
+/* bars-layer: absolute로 날짜 위에 겹침 */
 .bars-layer{position:absolute;top:0;left:0;right:0;pointer-events:none}
 .bar-slot{position:relative;height:30px;pointer-events:none}
-.bar-slot:first-child{margin-top:29px}
+.bar-slot:first-child{margin-top:28px}
 .bar-slot+.bar-slot{margin-top:2px}
 .ebar{position:absolute;height:28px;border-radius:4px;padding:1px 6px;cursor:pointer;overflow:hidden;pointer-events:auto;display:flex;flex-direction:column;justify-content:center}
 .ebar:hover{filter:brightness(0.93)}
@@ -90,11 +82,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .en{font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.4}
 .ep{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;opacity:0.85}
 
-/* 지원사업 캘린더 바 마감일 강조 */
-.ebar-deadline{position:absolute;right:0;top:0;bottom:0;width:6px;background:rgba(0,0,0,0.18);border-radius:0 4px 4px 0}
-.ebar-deadline-label{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:10px;font-weight:700;opacity:0.9}
-
-/* 지원사업 목록 */
 .support-list-wrap{margin-top:0.5rem}
 .support-list-title{font-size:14px;font-weight:600;color:#111;margin-bottom:0.75rem;display:flex;align-items:center;gap:8px}
 .support-tbl{width:100%;border-collapse:collapse;font-size:13px}
@@ -103,15 +90,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .support-tbl tr:last-child td{border-bottom:none}
 .support-tbl tr:hover td{background:#f9f9f7;cursor:pointer}
 .badge{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600;white-space:nowrap}
-.badge-ready{background:#EAF3DE;color:#27500A}
-.badge-pending{background:#FEF3E2;color:#7A4800}
-.badge-deadline{background:#FCEBEB;color:#A32D2D}
 .badge-done{background:#EEEDFE;color:#3C3489}
+.badge-pending{background:#FEF3E2;color:#7A4800}
 .deadline-badge{font-size:10px;padding:2px 6px;border-radius:4px;background:#FCEBEB;color:#A32D2D;font-weight:600;margin-left:4px}
-
-/* 팝업 오버레이 */
 .pop-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:290;display:none}
-/* 행사 팝업 */
 .pop{position:fixed;z-index:300;background:#fff;border-radius:16px;width:min(520px,92vw);max-height:82vh;display:none;box-shadow:0 8px 40px rgba(0,0,0,0.18);overflow:hidden;flex-direction:column;top:50%;left:50%;transform:translate(-50%,-50%)}
 .pop-header{padding:1.2rem 1.4rem 0.875rem;border-bottom:1px solid #f0f0f0;flex-shrink:0}
 .pop-plat-badge{font-size:11px;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:8px;font-weight:600}
@@ -132,8 +114,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .pop-btn-edit:hover{background:#f5f5f3}
 .pop-btn-close{font-size:13px;padding:7px 18px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#999;cursor:pointer;margin-left:auto}
 .pop-btn-close:hover{background:#f5f5f3}
-
-/* 지원사업 상세 팝업 */
 .spop{position:fixed;z-index:300;background:#fff;border-radius:16px;width:min(580px,94vw);max-height:85vh;display:none;box-shadow:0 8px 40px rgba(0,0,0,0.18);overflow:hidden;flex-direction:column;top:50%;left:50%;transform:translate(-50%,-50%)}
 .spop-header{padding:1.2rem 1.4rem 0.875rem;border-bottom:1px solid #f0f0f0;flex-shrink:0}
 .spop-title{font-size:16px;font-weight:700;color:#111;margin-bottom:6px;line-height:1.4}
@@ -145,7 +125,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .spop-field .sf-value{font-size:13px;color:#111;font-weight:500}
 .spop-field.full{grid-column:1/-1}
 .spop-sec-title{font-size:11px;color:#aaa;font-weight:600;letter-spacing:0.05em;margin-bottom:10px;margin-top:0.25rem}
-/* 체크박스 목록 */
 .doc-list{display:flex;flex-direction:column;gap:6px;margin-bottom:1rem}
 .doc-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid #eee;border-radius:8px;cursor:pointer;transition:background 0.1s}
 .doc-item:hover{background:#f9f9f7}
@@ -161,8 +140,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .spop-btn-save:hover{background:#3C3489}
 .spop-btn-close{font-size:13px;padding:7px 18px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#999;cursor:pointer}
 .spop-btn-close:hover{background:#f5f5f3}
-
-/* 모달 공통 */
 .mbg{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;align-items:center;justify-content:center;z-index:400}
 .mbg.open{display:flex}
 .modal{background:#fff;border-radius:14px;padding:1.5rem;width:min(500px,94vw);max-height:88vh;overflow-y:auto}
@@ -184,8 +161,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .bsv{font-size:13px;padding:7px 16px;border:1px solid #534AB7;border-radius:8px;background:#534AB7;color:#CECBF6;cursor:pointer}
 .bsv:hover{background:#3C3489}
 .bdl{font-size:13px;padding:7px 16px;border:1px solid #E24B4A;border-radius:8px;background:#fff;color:#E24B4A;cursor:pointer;margin-right:auto}
-
-/* 플랫폼 관리 모달 */
 .plat-modal{background:#fff;border-radius:14px;padding:1.5rem;width:min(500px,94vw);max-height:88vh;overflow-y:auto}
 .plat-modal h2{font-size:16px;font-weight:600;margin-bottom:0.25rem;color:#111}
 .plat-modal .sub{font-size:12px;color:#aaa;margin-bottom:1rem}
@@ -203,27 +178,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .plat-head{display:grid;grid-template-columns:28px 1fr 60px 60px 44px 32px;gap:6px;padding:0 10px;margin-bottom:4px}
 .plat-head span{font-size:11px;color:#bbb}
 .saving-msg{font-size:12px;color:#888;margin-top:8px;text-align:center}
-
-@media(max-width:700px){
-  body{padding:0.75rem}
-  .metrics{grid-template-columns:repeat(2,1fr)}
-  .spop-grid{grid-template-columns:1fr}
-  .support-tbl{font-size:12px}
-}
+@media(max-width:700px){body{padding:0.75rem}.metrics{grid-template-columns:repeat(2,1fr)}.spop-grid{grid-template-columns:1fr}.support-tbl{font-size:12px}}
 </style>
 </head>
 <body>
 <div class="container">
-
 <h1 style="font-size:20px;font-weight:700;color:#111;margin-bottom:1rem">🥬 선김치 프로모션 캘린더</h1>
-
-<!-- 탭 -->
 <div class="tabs">
   <button class="tab on" onclick="switchTab('event',this)">📦 행사 캘린더</button>
   <button class="tab" onclick="switchTab('support',this)">🏛 지원사업 캘린더</button>
 </div>
 
-<!-- ───────────── 행사 탭 ───────────── -->
 <div class="tab-panel on" id="tab-event">
   <div class="topbar">
     <h2>행사 일정</h2>
@@ -261,7 +226,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
-<!-- ───────────── 지원사업 탭 ───────────── -->
 <div class="tab-panel" id="tab-support">
   <div class="topbar">
     <h2>지원사업 일정</h2>
@@ -281,40 +245,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     </div>
     <div id="s-calbody"><div style="text-align:center;padding:4rem;color:#aaa">⏳ 불러오는 중...</div></div>
   </div>
-
-  <!-- 지원사업 목록 -->
   <div class="support-list-wrap">
-    <div class="support-list-title">
-      📋 지원사업 목록
-      <span id="s-list-count" style="font-size:12px;color:#aaa;font-weight:400"></span>
-    </div>
+    <div class="support-list-title">📋 지원사업 목록<span id="s-list-count" style="font-size:12px;color:#aaa;font-weight:400"></span></div>
     <div style="overflow-x:auto">
       <table class="support-tbl">
-        <thead>
-          <tr>
-            <th>지원사업명</th>
-            <th>사업자명</th>
-            <th>신청기간</th>
-            <th>지원쇼핑몰</th>
-            <th>담당자</th>
-            <th>대행여부</th>
-            <th>서류상태</th>
-          </tr>
-        </thead>
-        <tbody id="s-list-body">
-          <tr><td colspan="7" style="text-align:center;padding:2rem;color:#aaa">데이터를 불러오는 중...</td></tr>
-        </tbody>
+        <thead><tr><th>지원사업명</th><th>사업자명</th><th>신청기간</th><th>지원쇼핑몰</th><th>담당자</th><th>대행여부</th><th>서류상태</th></tr></thead>
+        <tbody id="s-list-body"><tr><td colspan="7" style="text-align:center;padding:2rem;color:#aaa">데이터를 불러오는 중...</td></tr></tbody>
       </table>
     </div>
   </div>
 </div>
+</div>
 
-</div><!-- /container -->
-
-<!-- 팝업 오버레이 -->
 <div class="pop-overlay" id="pop-overlay" onclick="closePop();closeSpop()"></div>
 
-<!-- 행사 상세 팝업 -->
 <div class="pop" id="pop">
   <div class="pop-header" id="pop-header"></div>
   <div class="pop-body" id="pop-body"></div>
@@ -324,7 +268,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
-<!-- 지원사업 상세 팝업 -->
 <div class="spop" id="spop">
   <div class="spop-header" id="spop-header"></div>
   <div class="spop-body" id="spop-body"></div>
@@ -336,7 +279,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
-<!-- 행사 등록/수정 모달 -->
 <div class="mbg" id="mbg" onclick="if(event.target===this)closeModal()">
 <div class="modal">
   <h2 id="mtitle">행사 등록</h2>
@@ -362,7 +304,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 </div>
 </div>
 
-<!-- 지원사업 등록/수정 모달 -->
 <div class="mbg" id="smbg" onclick="if(event.target===this)closeSModal()">
 <div class="modal" style="width:min(580px,94vw)">
   <h2 id="smtitle">지원사업 등록</h2>
@@ -378,21 +319,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div class="dg">
     <div class="frow"><label>지원쇼핑몰</label><input type="text" id="sf-mall" placeholder="예) 네이버, 쿠팡"></div>
     <div class="frow"><label>대행여부</label>
-      <select id="sf-agency">
-        <option value="">선택</option>
-        <option value="직접">직접</option>
-        <option value="대행">대행</option>
-      </select>
+      <select id="sf-agency"><option value="">선택</option><option value="직접">직접</option><option value="대행">대행</option></select>
     </div>
   </div>
   <div class="frow"><label>담당자명</label><input type="text" id="sf-manager" placeholder="예) 김지혜"></div>
   <div class="frow"><label>지원사항</label><textarea id="sf-benefit" placeholder="예) 20% 상품할인 쿠폰 지급"></textarea></div>
   <div class="frow"><label>지원상품</label><input type="text" id="sf-product" placeholder="예) 겉절이김치, 포기김치"></div>
   <div class="frow"><label>필요서류</label>
-    <div class="pw">
-      <div id="sf-doc-rows"></div>
-      <button class="ap" onclick="addDocRow()">+ 서류 추가</button>
-    </div>
+    <div class="pw"><div id="sf-doc-rows"></div><button class="ap" onclick="addDocRow()">+ 서류 추가</button></div>
   </div>
   <div class="frow"><label>비고</label><textarea id="sf-memo" placeholder="기타 메모"></textarea></div>
   <div class="mbtns">
@@ -403,14 +337,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 </div>
 </div>
 
-<!-- 플랫폼 관리 모달 -->
 <div class="mbg" id="pmbg" onclick="if(event.target===this)closePlatModal()">
 <div class="plat-modal">
   <h2>플랫폼 관리</h2>
   <div class="sub">플랫폼을 자유롭게 추가·수정·삭제할 수 있어요.</div>
-  <div class="plat-head">
-    <span>#</span><span>플랫폼명</span><span style="text-align:center">배경색</span><span style="text-align:center">글자색</span><span>미리보기</span><span></span>
-  </div>
+  <div class="plat-head"><span>#</span><span>플랫폼명</span><span style="text-align:center">배경색</span><span style="text-align:center">글자색</span><span>미리보기</span><span></span></div>
   <div class="plat-list" id="plat-list"></div>
   <div style="border-top:1px solid #eee;padding-top:0.875rem;margin-top:0.25rem">
     <div style="font-size:12px;color:#888;font-weight:500;margin-bottom:6px">새 플랫폼 추가</div>
@@ -432,25 +363,22 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <script>
 const GAS='https://script.google.com/macros/s/AKfycbxAW-hsytkEi11EDac-oHZV5_KEVIwpMnI7tpDd4uPyjbHVq1MGR37RctU8cMxcoiYMOA/exec';
 const DEFAULT_PLATS=[
-  {id:'naver',  name:'네이버 스마트스토어',bg:'#E6F1FB',tc:'#0C447C'},
-  {id:'sun',    name:'선김치몰',           bg:'#EAF3DE',tc:'#27500A'},
-  {id:'coupang',name:'쿠팡',              bg:'#FAECE7',tc:'#712B13'},
-  {id:'kakao',  name:'카카오쇼핑',         bg:'#FAEEDA',tc:'#633806'},
-  {id:'wemake', name:'위메프',            bg:'#FBEAF0',tc:'#72243E'},
-  {id:'tmon',   name:'티몬',             bg:'#F1EFE8',tc:'#5F5E5A'},
-  {id:'11st',   name:'11번가',           bg:'#FCEBEB',tc:'#791F1F'},
-  {id:'etc',    name:'기타',             bg:'#F1EFE8',tc:'#444441'},
+  {id:'naver',name:'네이버 스마트스토어',bg:'#E6F1FB',tc:'#0C447C'},
+  {id:'sun',name:'선김치몰',bg:'#EAF3DE',tc:'#27500A'},
+  {id:'coupang',name:'쿠팡',bg:'#FAECE7',tc:'#712B13'},
+  {id:'kakao',name:'카카오쇼핑',bg:'#FAEEDA',tc:'#633806'},
+  {id:'wemake',name:'위메프',bg:'#FBEAF0',tc:'#72243E'},
+  {id:'tmon',name:'티몬',bg:'#F1EFE8',tc:'#5F5E5A'},
+  {id:'11st',name:'11번가',bg:'#FCEBEB',tc:'#791F1F'},
+  {id:'etc',name:'기타',bg:'#F1EFE8',tc:'#444441'},
 ];
-
-let plats=[], evs=[], supports=[];
+let plats=[],evs=[],supports=[];
 let curP='all';
-let eY=new Date().getFullYear(), eM=new Date().getMonth();
-let sY=new Date().getFullYear(), sM=new Date().getMonth();
-let editId=null, srchQ='', srchIds=new Set();
-let curSpopIdx=null; // 현재 열린 지원사업 _rowIndex
-let spopDocs=[]; // 팝업 내 체크 상태 임시 저장
+let eY=new Date().getFullYear(),eM=new Date().getMonth();
+let sY=new Date().getFullYear(),sM=new Date().getMonth();
+let editId=null,srchQ='',srchIds=new Set();
+let curSpopIdx=null,spopDocs=[];
 
-// ── 유틸 ──
 function fmt(n){return Number(n).toLocaleString()+'원'}
 function pad(n){return String(n).padStart(2,'0')}
 function dstr(y,m,d){return y+'-'+pad(m+1)+'-'+pad(d)}
@@ -458,87 +386,45 @@ function today(){const d=new Date();return dstr(d.getFullYear(),d.getMonth(),d.g
 function fmtDate(v){
   if(!v)return'';
   if(/^\d{4}-\d{2}-\d{2}$/.test(String(v).trim()))return String(v).trim();
-  const d=new Date(v);
-  if(isNaN(d))return String(v).trim();
+  const d=new Date(v);if(isNaN(d))return String(v).trim();
   return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
 }
 function platById(id){return plats.find(p=>p.id===String(id))||{name:id,bg:'#F1EFE8',tc:'#444'};}
 function filt(){return curP==='all'?evs:evs.filter(e=>e.plat===curP)}
-
-// 마감 임박 여부 (7일 이내)
-function isUrgent(dateStr){
-  if(!dateStr)return false;
-  const t=new Date(today()), d=new Date(dateStr);
-  const diff=(d-t)/(1000*60*60*24);
-  return diff>=0&&diff<=7;
-}
-function isExpired(dateStr){return dateStr&&dateStr<today()}
+function isUrgent(ds){if(!ds)return false;const diff=(new Date(ds)-new Date(today()))/(864e5);return diff>=0&&diff<=7;}
+function isExpired(ds){return ds&&ds<today()}
 function isAllDone(docs){return docs&&docs.length>0&&docs.every(d=>d.done)}
 
-// ── 탭 전환 ──
-function switchTab(name, el){
+function switchTab(name,el){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('on'));
   el.classList.add('on');
   document.getElementById('tab-'+name).classList.add('on');
 }
 
-// ── Sheets 통신 ──
-function setSyncStatus(state,msg){
-  document.getElementById('sdot').className='sync-dot '+state;
-  document.getElementById('smsg').textContent=msg;
-}
-async function gasGet(params=''){
-  const res=await fetch(GAS+'?t='+Date.now()+(params?'&'+params:''));
-  return res.json();
-}
-async function gasPost(body){
-  const res=await fetch(GAS,{method:'POST',body:JSON.stringify(body)});
-  return res.json();
-}
+function setSyncStatus(s,m){document.getElementById('sdot').className='sync-dot '+s;document.getElementById('smsg').textContent=m;}
+async function gasGet(p=''){const r=await fetch(GAS+'?t='+Date.now()+(p?'&'+p:''));return r.json();}
+async function gasPost(b){const r=await fetch(GAS,{method:'POST',body:JSON.stringify(b)});return r.json();}
 
 async function loadAll(){
   setSyncStatus('loading','데이터 불러오는 중...');
   try{
-    const [evJson,plJson,spJson]=await Promise.all([
-      gasGet('type=events'),
-      gasGet('type=plats'),
-      gasGet('type=support'),
-    ]);
-    if(evJson.ok) evs=evJson.data.map(e=>({...e,id:Number(e.id)||e.id,start:fmtDate(e.start),end:fmtDate(e.end),products:Array.isArray(e.products)?e.products:[]}));
-    plats=(plJson.ok&&plJson.data&&plJson.data.length>0)?plJson.data:JSON.parse(JSON.stringify(DEFAULT_PLATS));
-    if(spJson.ok) supports=spJson.data.map(s=>({
-      ...s,
-      '신청시작일':fmtDate(s['신청시작일']),
-      '신청마감일':fmtDate(s['신청마감일']),
-      '필요서류':Array.isArray(s['필요서류'])?s['필요서류']:[],
-    }));
+    const [ej,pj,sj]=await Promise.all([gasGet('type=events'),gasGet('type=plats'),gasGet('type=support')]);
+    if(ej.ok)evs=ej.data.map(e=>({...e,id:Number(e.id)||e.id,start:fmtDate(e.start),end:fmtDate(e.end),products:Array.isArray(e.products)?e.products:[]}));
+    plats=(pj.ok&&pj.data&&pj.data.length>0)?pj.data:JSON.parse(JSON.stringify(DEFAULT_PLATS));
+    if(sj.ok)supports=sj.data.map(s=>({...s,'신청시작일':fmtDate(s['신청시작일']),'신청마감일':fmtDate(s['신청마감일']),'필요서류':Array.isArray(s['필요서류'])?s['필요서류']:[]}));
     const now=new Date();
     setSyncStatus('ok','연동 완료 · '+now.getHours()+':'+pad(now.getMinutes())+' 기준');
     renderAll();
-  }catch(err){
-    setSyncStatus('err','연결 실패 — 새로고침을 눌러주세요');
-    renderAll();
-  }
+  }catch(e){setSyncStatus('err','연결 실패');renderAll();}
 }
 
-function renderAll(){
-  renderFilters();
-  renderEMetrics();
-  renderECal();
-  renderSMetrics();
-  renderSCal();
-  renderSList();
-}
+function renderAll(){renderFilters();renderEMetrics();renderECal();renderSMetrics();renderSCal();renderSList();}
 
-// ── 행사 필터 ──
 function renderFilters(){
-  let html=`<button class="pill${curP==='all'?' on':''}" onclick="setP('all')" style="${curP==='all'?'background:#EEEDFE;color:#3C3489;border-color:#534AB7':''}">전체</button>`;
-  plats.forEach(p=>{
-    const on=curP===p.id;
-    html+=`<button class="pill${on?' on':''}" onclick="setP('${p.id}')" style="${on?`background:${p.bg};color:${p.tc};border-color:${p.tc}`:''}"> ${p.name}</button>`;
-  });
-  document.getElementById('filters').innerHTML=html;
+  let h=`<button class="pill${curP==='all'?' on':''}" onclick="setP('all')" style="${curP==='all'?'background:#EEEDFE;color:#3C3489;border-color:#534AB7':''}">전체</button>`;
+  plats.forEach(p=>{const on=curP===p.id;h+=`<button class="pill${on?' on':''}" onclick="setP('${p.id}')" style="${on?`background:${p.bg};color:${p.tc};border-color:${p.tc}`:''}"> ${p.name}</button>`;});
+  document.getElementById('filters').innerHTML=h;
 }
 function setP(p){curP=p;renderFilters();renderEMetrics();renderECal();}
 function navM(tab,d){
@@ -546,56 +432,32 @@ function navM(tab,d){
   else{sM+=d;if(sM<0){sM=11;sY--;}if(sM>11){sM=0;sY++;}renderSMetrics();renderSCal();renderSList();}
 }
 
-// ── 행사 지표 ──
 function renderEMetrics(){
   const ev=filt(),t=today();
-  const a=ev.filter(e=>e.start<=t&&t<=e.end).length;
-  const u=ev.filter(e=>e.start>t).length;
-  const en=ev.filter(e=>e.end<t).length;
   document.getElementById('e-mlabel').textContent=eY+'년 '+(eM+1)+'월';
   document.getElementById('e-metrics').innerHTML=`
     <div class="metric"><div class="lb">전체 행사</div><div class="val">${ev.length}</div></div>
-    <div class="metric"><div class="lb">진행중</div><div class="val" style="color:#3B6D11">${a}</div></div>
-    <div class="metric"><div class="lb">예정</div><div class="val" style="color:#185FA5">${u}</div></div>
-    <div class="metric"><div class="lb">종료</div><div class="val" style="color:#aaa">${en}</div></div>`;
+    <div class="metric"><div class="lb">진행중</div><div class="val" style="color:#3B6D11">${ev.filter(e=>e.start<=t&&t<=e.end).length}</div></div>
+    <div class="metric"><div class="lb">예정</div><div class="val" style="color:#185FA5">${ev.filter(e=>e.start>t).length}</div></div>
+    <div class="metric"><div class="lb">종료</div><div class="val" style="color:#aaa">${ev.filter(e=>e.end<t).length}</div></div>`;
 }
+function renderECal(){document.getElementById('e-calbody').innerHTML=buildCal(eY,eM,filt(),'event');}
 
-// ── 행사 캘린더 ──
-function renderECal(){
-  document.getElementById('e-calbody').innerHTML=buildCal(eY,eM,filt(),'event');
-}
-
-// ── 지원사업 지표 ──
 function renderSMetrics(){
   const t=today();
   document.getElementById('s-mlabel').textContent=sY+'년 '+(sM+1)+'월';
-  const total=supports.length;
-  const active=supports.filter(s=>s['신청시작일']<=t&&t<=s['신청마감일']).length;
-  const urgent=supports.filter(s=>isUrgent(s['신청마감일'])&&!isExpired(s['신청마감일'])).length;
-  const done=supports.filter(s=>isAllDone(s['필요서류'])).length;
   document.getElementById('s-metrics').innerHTML=`
-    <div class="metric"><div class="lb">전체 지원사업</div><div class="val">${total}</div></div>
-    <div class="metric"><div class="lb">신청중</div><div class="val" style="color:#3B6D11">${active}</div></div>
-    <div class="metric"><div class="lb">마감임박 (7일)</div><div class="val" style="color:#A32D2D">${urgent}</div></div>
-    <div class="metric"><div class="lb">서류준비완료</div><div class="val" style="color:#534AB7">${done}</div></div>`;
+    <div class="metric"><div class="lb">전체 지원사업</div><div class="val">${supports.length}</div></div>
+    <div class="metric"><div class="lb">신청중</div><div class="val" style="color:#3B6D11">${supports.filter(s=>s['신청시작일']<=t&&t<=s['신청마감일']).length}</div></div>
+    <div class="metric"><div class="lb">마감임박 (7일)</div><div class="val" style="color:#A32D2D">${supports.filter(s=>isUrgent(s['신청마감일'])&&!isExpired(s['신청마감일'])).length}</div></div>
+    <div class="metric"><div class="lb">서류준비완료</div><div class="val" style="color:#534AB7">${supports.filter(s=>isAllDone(s['필요서류'])).length}</div></div>`;
 }
-
-// ── 지원사업 캘린더 ──
 function renderSCal(){
-  // 지원사업을 행사 형식으로 변환해서 공통 캘린더 빌더 사용
-  const sEvs=supports.map((s,i)=>({
-    id:String(s._rowIndex),
-    name:s['지원사업명'],
-    start:s['신청시작일'],
-    end:s['신청마감일'],
-    _done:isAllDone(s['필요서류']),
-    _urgent:isUrgent(s['신청마감일']),
-    _expired:isExpired(s['신청마감일']),
-  }));
+  const sEvs=supports.map(s=>({id:String(s._rowIndex),name:s['지원사업명'],start:s['신청시작일'],end:s['신청마감일'],_done:isAllDone(s['필요서류']),_urgent:isUrgent(s['신청마감일']),_expired:isExpired(s['신청마감일'])}));
   document.getElementById('s-calbody').innerHTML=buildCal(sY,sM,sEvs,'support');
 }
 
-// ── 공통 캘린더 빌더 ──
+// ── 핵심: 캘린더 빌더 ──
 function buildCal(Y,M,evList,type){
   const firstDay=new Date(Y,M,1).getDay();
   const dim=new Date(Y,M+1,0).getDate();
@@ -622,40 +484,33 @@ function buildCal(Y,M,evList,type){
       placed.push({e,sc,ec,slot});
     });
     const maxSlot=placed.length?Math.max(...placed.map(p=>p.slot)):-1;
-    const cellH=Math.max(72,29+(maxSlot+1)*32+6);
-    html+=`<div class="week-wrap" style="min-height:${cellH}px"><div class="week-cells">`;
+    // 핵심: 날짜숫자 28px + 슬롯 수 × 32px + 여백 8px
+    const rowH=Math.max(80,28+(maxSlot+1)*32+8);
+    // week-wrap, week-cells, day-cell 모두 동일한 height 적용
+    html+=`<div class="week-wrap" style="height:${rowH}px"><div class="week-cells" style="height:${rowH}px">`;
     week.forEach((c,ci)=>{
       const s=dstr(c.y,c.m,c.d);
-      html+=`<div class="day-cell${c.other?' other':''}${s===t?' today':''}${ci===0?' sun':''}" style="min-height:${cellH}px"><div class="dn">${c.d}</div></div>`;
+      html+=`<div class="day-cell${c.other?' other':''}${s===t?' today':''}${ci===0?' sun':''}" style="height:${rowH}px"><div class="dn">${c.d}</div></div>`;
     });
-    html+=`</div><div class="bars-layer">`;
+    html+=`</div><div class="bars-layer" style="height:${rowH}px">`;
     for(let sl=0;sl<=maxSlot;sl++){
-      html+=`<div class="bar-slot" style="${sl===0?'margin-top:29px':'margin-top:2px'}">`;
+      html+=`<div class="bar-slot" style="margin-top:${sl===0?28:2}px">`;
       placed.filter(p=>p.slot===sl).forEach(({e,sc,ec})=>{
         const isStart=e.start>=wS&&dstr(week[sc].y,week[sc].m,week[sc].d)===e.start;
         const isEnd=e.end<=wE;
-        const rL=isStart?'4px':'0';const rR=isEnd?'4px':'0';
-        const W=((ec-sc+1)/7*100).toFixed(2);const L=(sc/7*100).toFixed(2);
+        const rL=isStart?'4px':'0',rR=isEnd?'4px':'0';
+        const W=((ec-sc+1)/7*100).toFixed(2),L=(sc/7*100).toFixed(2);
         let bg,tc,label;
-        if(type==='event'){
-          const pl=platById(e.plat);bg=pl.bg;tc=pl.tc;
-          label=`[${pl.name}] ${e.name}`;
-        } else {
-          // 지원사업 색상
-          if(e._done){bg='#EAF3DE';tc='#27500A';}
-          else if(e._expired){bg='#F1EFE8';tc='#888';}
-          else if(e._urgent){bg='#FCEBEB';tc='#A32D2D';}
-          else{bg='#FEF3E2';tc='#7A4800';}
+        if(type==='event'){const pl=platById(e.plat);bg=pl.bg;tc=pl.tc;label=`[${pl.name}] ${e.name}`;}
+        else{
+          bg=e._done?'#EAF3DE':e._expired?'#F1EFE8':e._urgent?'#FCEBEB':'#FEF3E2';
+          tc=e._done?'#27500A':e._expired?'#888':e._urgent?'#A32D2D':'#7A4800';
           label=e.name;
         }
         const dimmed=type==='event'&&srchQ&&!srchIds.has(e.id)?'dimmed':'';
-        const onclick=type==='event'
-          ?`showPop(event,'${String(e.id).replace(/'/g,"\\'")}')`
-          :`showSpop(event,'${String(e.id).replace(/'/g,"\\'")}')`;
-        // 마감일 강조 (지원사업)
-        const deadlineBar=type==='support'&&isEnd&&!e._expired
-          ?`<span style="position:absolute;right:0;top:0;bottom:0;width:5px;background:rgba(0,0,0,0.2);border-radius:0 ${rR} ${rR} 0"></span>`:'';
+        const onclick=type==='event'?`showPop(event,'${String(e.id).replace(/'/g,"\\'")}')`:  `showSpop(event,'${String(e.id).replace(/'/g,"\\'")}')`;
         const pt=type==='event'&&e.products?e.products.map(p=>p.name+' '+fmt(p.sale)).join(' · '):'';
+        const deadlineBar=type==='support'&&isEnd&&!e._expired?`<span style="position:absolute;right:0;top:0;bottom:0;width:5px;background:rgba(0,0,0,0.2);border-radius:0 ${rR} ${rR} 0"></span>`:'';
         html+=`<div class="ebar ${dimmed}" style="left:calc(${L}% + 1px);width:calc(${W}% - 3px);border-radius:${rL} ${rR} ${rR} ${rL};background:${bg};color:${tc};position:relative" onclick="${onclick}">
           <span class="en">${label}${type==='support'&&isEnd&&!e._expired?' ⚠':''}${type==='support'&&e._done?' ✓':''}</span>
           ${type==='event'?`<span class="ep">${pt}</span>`:''}
@@ -669,137 +524,79 @@ function buildCal(Y,M,evList,type){
   return html;
 }
 
-// ── 지원사업 목록 ──
 function renderSList(){
-  const t=today();
   document.getElementById('s-list-count').textContent='총 '+supports.length+'건';
-  if(!supports.length){
-    document.getElementById('s-list-body').innerHTML='<tr><td colspan="7" style="text-align:center;padding:2rem;color:#aaa">등록된 지원사업이 없습니다.</td></tr>';
-    return;
-  }
-  // 마감일 기준 정렬
+  if(!supports.length){document.getElementById('s-list-body').innerHTML='<tr><td colspan="7" style="text-align:center;padding:2rem;color:#aaa">등록된 지원사업이 없습니다.</td></tr>';return;}
   const sorted=[...supports].sort((a,b)=>a['신청마감일'].localeCompare(b['신청마감일']));
   document.getElementById('s-list-body').innerHTML=sorted.map(s=>{
-    const done=isAllDone(s['필요서류']);
-    const urgent=isUrgent(s['신청마감일'])&&!isExpired(s['신청마감일']);
-    const expired=isExpired(s['신청마감일']);
-    const docBadge=done
-      ?`<span class="badge badge-done">✅ 준비완료</span>`
-      :s['필요서류']&&s['필요서류'].length>0
-        ?`<span class="badge badge-pending">📋 서류준비중</span>`
-        :`<span style="font-size:12px;color:#ccc">-</span>`;
-    const deadlineMark=urgent?`<span class="deadline-badge">D-${Math.ceil((new Date(s['신청마감일'])-new Date(today()))/(1000*60*60*24))}</span>`:'';
+    const done=isAllDone(s['필요서류']),urgent=isUrgent(s['신청마감일'])&&!isExpired(s['신청마감일']),expired=isExpired(s['신청마감일']);
+    const docBadge=done?`<span class="badge badge-done">✅ 준비완료</span>`:s['필요서류']&&s['필요서류'].length>0?`<span class="badge badge-pending">📋 서류준비중</span>`:`<span style="font-size:12px;color:#ccc">-</span>`;
+    const dm=urgent?`<span class="deadline-badge">D-${Math.ceil((new Date(s['신청마감일'])-new Date(today()))/(864e5))}</span>`:'';
     return`<tr onclick="showSpop(event,'${String(s._rowIndex).replace(/'/g,"\\'")}')">
       <td><span style="font-weight:600">${s['지원사업명']}</span></td>
       <td>${s['사업자명']||'-'}</td>
-      <td style="${expired?'color:#aaa':''}${urgent?'color:#A32D2D;font-weight:600':''}">${s['신청시작일']||'-'} ~ ${s['신청마감일']||'-'}${deadlineMark}</td>
-      <td>${s['지원쇼핑몰']||'-'}</td>
-      <td>${s['담당자명']||'-'}</td>
+      <td style="${expired?'color:#aaa':''}${urgent?';color:#A32D2D;font-weight:600':''}">${s['신청시작일']||'-'} ~ ${s['신청마감일']||'-'}${dm}</td>
+      <td>${s['지원쇼핑몰']||'-'}</td><td>${s['담당자명']||'-'}</td>
       <td><span style="font-size:12px;color:${s['대행여부']==='대행'?'#534AB7':'#555'}">${s['대행여부']||'-'}</span></td>
       <td>${docBadge}</td>
     </tr>`;
   }).join('');
 }
 
-// ── 행사 팝업 ──
 function showPop(ev,id){
   ev.stopPropagation();
   const e=evs.find(v=>String(v.id)===String(id));if(!e)return;
   const pl=platById(e.plat);
-  const rows=e.products.map(p=>{
-    const d=p.orig?Math.round((1-Number(p.sale)/Number(p.orig))*100):0;
-    return`<tr><td style="font-weight:500">${p.name}</td><td class="pop-orig">${p.orig?fmt(p.orig):'-'}</td><td class="pop-sale">${fmt(p.sale)}</td><td>${d?`<span class="pop-disc">${d}%</span>`:''}</td></tr>`;
-  }).join('');
-  document.getElementById('pop-header').innerHTML=`
-    <div class="pop-plat-badge" style="background:${pl.bg};color:${pl.tc}">${pl.name}</div>
-    <div class="pop-name">${e.name}</div>
-    <div class="pop-date">📅 ${e.start} ~ ${e.end}</div>`;
-  document.getElementById('pop-body').innerHTML=`
-    <div class="pop-sec-title">행사 상품 (${e.products.length}개)</div>
-    <table class="pop-tbl"><tr><th>상품명</th><th>정가</th><th>행사가</th><th>할인율</th></tr>${rows}</table>
-    ${e.memo?`<div class="pop-sec-title" style="margin-top:0.5rem">메모</div><div class="pop-memo-box">📌 ${e.memo}</div>`:''}`;
+  const rows=e.products.map(p=>{const d=p.orig?Math.round((1-Number(p.sale)/Number(p.orig))*100):0;return`<tr><td style="font-weight:500">${p.name}</td><td class="pop-orig">${p.orig?fmt(p.orig):'-'}</td><td class="pop-sale">${fmt(p.sale)}</td><td>${d?`<span class="pop-disc">${d}%</span>`:''}</td></tr>`;}).join('');
+  document.getElementById('pop-header').innerHTML=`<div class="pop-plat-badge" style="background:${pl.bg};color:${pl.tc}">${pl.name}</div><div class="pop-name">${e.name}</div><div class="pop-date">📅 ${e.start} ~ ${e.end}</div>`;
+  document.getElementById('pop-body').innerHTML=`<div class="pop-sec-title">행사 상품 (${e.products.length}개)</div><table class="pop-tbl"><tr><th>상품명</th><th>정가</th><th>행사가</th><th>할인율</th></tr>${rows}</table>${e.memo?`<div class="pop-sec-title" style="margin-top:0.5rem">메모</div><div class="pop-memo-box">📌 ${e.memo}</div>`:''}`;
   document.getElementById('pop-btn-edit').onclick=()=>{closePop();openModal(id);};
   document.getElementById('pop').style.display='flex';
   document.getElementById('pop-overlay').style.display='block';
 }
 function closePop(){document.getElementById('pop').style.display='none';document.getElementById('pop-overlay').style.display='none';}
 
-// ── 지원사업 상세 팝업 ──
 function showSpop(ev,rowIndex){
   ev.stopPropagation();
-  const s=supports.find(x=>String(x._rowIndex)===String(rowIndex));
-  if(!s)return;
+  const s=supports.find(x=>String(x._rowIndex)===String(rowIndex));if(!s)return;
   curSpopIdx=s._rowIndex;
   spopDocs=JSON.parse(JSON.stringify(s['필요서류']||[]));
-
-  const expired=isExpired(s['신청마감일']);
-  const urgent=isUrgent(s['신청마감일'])&&!expired;
-  const deadlineStyle=urgent?'color:#A32D2D;font-weight:600':expired?'color:#aaa':'';
-
+  const expired=isExpired(s['신청마감일']),urgent=isUrgent(s['신청마감일'])&&!expired;
   document.getElementById('spop-header').innerHTML=`
     <div class="spop-title">${s['지원사업명']}</div>
     <div class="spop-meta">
-      <span>📅 신청기간: <span style="${deadlineStyle}">${s['신청시작일']||'-'} ~ ${s['신청마감일']||'-'}</span>${urgent?` <span class="deadline-badge">D-${Math.ceil((new Date(s['신청마감일'])-new Date(today()))/(1000*60*60*24))}</span>`:''}</span>
+      <span>📅 <span style="${urgent?'color:#A32D2D;font-weight:600':expired?'color:#aaa':''}">${s['신청시작일']||'-'} ~ ${s['신청마감일']||'-'}</span>${urgent?` <span class="deadline-badge">D-${Math.ceil((new Date(s['신청마감일'])-new Date(today()))/(864e5))}</span>`:''}</span>
       <span>🏢 ${s['주관단체']||'-'}</span>
     </div>`;
-
-  const fields=[
-    {label:'사업자명',value:s['사업자명']},{label:'지원쇼핑몰',value:s['지원쇼핑몰']},
-    {label:'담당자',value:s['담당자명']},{label:'대행여부',value:s['대행여부']},
-    {label:'지원사항',value:s['지원사항'],full:true},
-    {label:'지원상품',value:s['지원상품'],full:true},
-    {label:'비고',value:s['비고'],full:true},
-  ].filter(f=>f.value);
-
+  const fields=[{label:'사업자명',value:s['사업자명']},{label:'지원쇼핑몰',value:s['지원쇼핑몰']},{label:'담당자',value:s['담당자명']},{label:'대행여부',value:s['대행여부']},{label:'지원사항',value:s['지원사항'],full:true},{label:'지원상품',value:s['지원상품'],full:true},{label:'비고',value:s['비고'],full:true}].filter(f=>f.value);
   const fieldHtml=fields.map(f=>`<div class="spop-field${f.full?' full':''}"><div class="sf-label">${f.label}</div><div class="sf-value">${f.value}</div></div>`).join('');
-
   const allDone=isAllDone(spopDocs);
-  const docHtml=spopDocs.length>0
-    ?spopDocs.map((doc,i)=>`
-      <div class="doc-item${doc.done?' checked':''}" onclick="toggleDoc(${i})" id="doc-item-${i}">
-        <div class="doc-cb" id="doc-cb-${i}">${doc.done?'✓':''}</div>
-        <span class="doc-name">${doc.name}</span>
-      </div>`).join('')
-    :`<div style="font-size:13px;color:#aaa;padding:0.5rem 0">등록된 필요서류가 없습니다.</div>`;
-
-  document.getElementById('spop-body').innerHTML=`
-    <div class="spop-grid">${fieldHtml}</div>
-    ${spopDocs.length>0?`
-    <div class="spop-sec-title">필요서류 (${spopDocs.length}개)</div>
-    <div class="all-done-msg" id="all-done-msg" style="display:${allDone?'block':'none'}">🎉 모든 서류 준비 완료!</div>
-    <div class="doc-list">${docHtml}</div>`:''}`;
-
+  const docHtml=spopDocs.length>0?spopDocs.map((doc,i)=>`<div class="doc-item${doc.done?' checked':''}" onclick="toggleDoc(${i})" id="doc-item-${i}"><div class="doc-cb" id="doc-cb-${i}">${doc.done?'✓':''}</div><span class="doc-name">${doc.name}</span></div>`).join(''):`<div style="font-size:13px;color:#aaa;padding:0.5rem 0">등록된 필요서류가 없습니다.</div>`;
+  document.getElementById('spop-body').innerHTML=`<div class="spop-grid">${fieldHtml}</div>${spopDocs.length>0?`<div class="spop-sec-title">필요서류 (${spopDocs.length}개)</div><div class="all-done-msg" id="all-done-msg" style="display:${allDone?'block':'none'}">🎉 모든 서류 준비 완료!</div><div class="doc-list">${docHtml}</div>`:''}`;
   document.getElementById('spop-save-msg').textContent='';
   document.getElementById('spop').style.display='flex';
   document.getElementById('pop-overlay').style.display='block';
 }
-
 function toggleDoc(i){
   spopDocs[i].done=!spopDocs[i].done;
-  const item=document.getElementById('doc-item-'+i);
-  const cb=document.getElementById('doc-cb-'+i);
-  item.classList.toggle('checked',spopDocs[i].done);
-  cb.textContent=spopDocs[i].done?'✓':'';
-  // 전체 완료 메시지
+  document.getElementById('doc-item-'+i).classList.toggle('checked',spopDocs[i].done);
+  document.getElementById('doc-cb-'+i).textContent=spopDocs[i].done?'✓':'';
   const allDone=spopDocs.every(d=>d.done)&&spopDocs.length>0;
   document.getElementById('all-done-msg').style.display=allDone?'block':'none';
 }
-
 async function saveSupport(){
   if(!curSpopIdx)return;
   document.getElementById('spop-save-msg').textContent='저장 중...';
   try{
-    const s={_rowIndex:curSpopIdx,'필요서류':spopDocs};
-    await gasPost({action:'updateSupport',support:s,docsOnly:true});
+    await gasPost({action:'updateSupport',support:{_rowIndex:curSpopIdx,'필요서류':spopDocs},docsOnly:true});
     const idx=supports.findIndex(s=>s._rowIndex===curSpopIdx);
-    if(idx>-1) supports[idx]['필요서류']=spopDocs;
+    if(idx>-1)supports[idx]['필요서류']=spopDocs;
     document.getElementById('spop-save-msg').textContent='✅ 저장 완료!';
     renderSList();renderSMetrics();renderSCal();
   }catch{document.getElementById('spop-save-msg').textContent='❌ 저장 실패';}
 }
 function closeSpop(){document.getElementById('spop').style.display='none';document.getElementById('pop-overlay').style.display='none';}
 
-// ── 검색 ──
 function hl(t,q){if(!q)return t;return t.replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<span class="sr-hl">$1</span>');}
 function doSearch(v){
   srchQ=v.trim();
@@ -815,9 +612,8 @@ function doSearch(v){
   document.getElementById('srl').innerHTML=found.map(e=>{
     const pl=platById(e.plat);
     const badge=`<span style="font-size:11px;padding:2px 8px;border-radius:20px;background:${pl.bg};color:${pl.tc};font-weight:500">${pl.name}</span>`;
-    const q2=srchQ.toLowerCase();
-    const nameMatch=e.name.toLowerCase().includes(q2);
-    const visibleProds=nameMatch?e.products:e.products.filter(p=>p.name.toLowerCase().includes(q2));
+    const nameMatch=e.name.toLowerCase().includes(srchQ.toLowerCase());
+    const visibleProds=nameMatch?e.products:e.products.filter(p=>p.name.toLowerCase().includes(srchQ.toLowerCase()));
     const rows=visibleProds.map(p=>{const d=p.orig?Math.round((1-p.sale/p.orig)*100):0;return`<tr><td>${hl(p.name,srchQ)}</td><td style="text-decoration:line-through;color:#bbb">${fmt(p.orig)}</td><td style="color:#993C1D;font-weight:600">${fmt(p.sale)}</td><td style="color:#993C1D;font-size:11px">${d?d+'%':''}</td></tr>`;}).join('');
     return`<div class="sr-item"><div class="sr-top">${badge}<span class="sr-name">${hl(e.name,srchQ)}</span><span class="sr-date">${e.start} ~ ${e.end}</span></div><table class="sr-tbl"><tr><th>상품명</th><th>정가</th><th>행사가</th><th>할인율</th></tr>${rows}</table></div>`;
   }).join('');
@@ -825,17 +621,14 @@ function doSearch(v){
 }
 function clearSrch(){document.getElementById('sq').value='';doSearch('');}
 
-// ── 지원사업 모달 ──
 let editSupRowIndex=null;
-
 function openSModal(rowIndex){
   editSupRowIndex=rowIndex||null;
   document.getElementById('smtitle').textContent=rowIndex?'지원사업 수정':'지원사업 등록';
   document.getElementById('sf-bdl').style.display=rowIndex?'block':'none';
   document.getElementById('sf-doc-rows').innerHTML='';
   if(rowIndex){
-    const s=supports.find(x=>x._rowIndex===rowIndex);
-    if(!s)return;
+    const s=supports.find(x=>x._rowIndex===rowIndex);if(!s)return;
     document.getElementById('sf-start').value=s['신청시작일']||'';
     document.getElementById('sf-end').value=s['신청마감일']||'';
     document.getElementById('sf-name').value=s['지원사업명']||'';
@@ -855,66 +648,36 @@ function openSModal(rowIndex){
   document.getElementById('smbg').classList.add('open');
 }
 function closeSModal(){document.getElementById('smbg').classList.remove('open');}
-
 function addDocRow(name='',done=false){
-  const d=document.createElement('div');
-  d.className='pr';
-  d.style.gridTemplateColumns='1fr auto';
-  d.innerHTML=`<input type="text" placeholder="서류명 (예: 사업자등록증)" value="${name}" class="doc-name-input" style="font-size:13px;padding:5px 8px;border:1px solid #ddd;border-radius:6px">
-    <button style="background:none;border:none;cursor:pointer;color:#E24B4A;font-size:15px;line-height:1;padding:0 4px" onclick="this.parentNode.remove()">×</button>`;
+  const d=document.createElement('div');d.className='pr';d.style.gridTemplateColumns='1fr auto';
+  d.innerHTML=`<input type="text" placeholder="서류명 (예: 사업자등록증)" value="${name}" class="doc-name-input" style="font-size:13px;padding:5px 8px;border:1px solid #ddd;border-radius:6px"><button style="background:none;border:none;cursor:pointer;color:#E24B4A;font-size:15px;line-height:1;padding:0 4px" onclick="this.parentNode.remove()">×</button>`;
   document.getElementById('sf-doc-rows').appendChild(d);
 }
-
 async function saveSup(){
   const name=document.getElementById('sf-name').value.trim();
   const end=document.getElementById('sf-end').value;
   if(!name||!end){alert('지원사업명과 신청마감일은 필수예요.');return;}
-  // 필요서류 수집 (기존 done 상태 유지)
   const oldDocs=editSupRowIndex?((supports.find(x=>x._rowIndex===editSupRowIndex)||{})['필요서류']||[]):[];
   const docs=[];
   document.querySelectorAll('#sf-doc-rows .doc-name-input').forEach(inp=>{
     const nm=inp.value.trim();
-    if(nm){
-      const existing=oldDocs.find(d=>d.name===nm);
-      docs.push({name:nm,done:existing?existing.done:false});
-    }
+    if(nm){const ex=oldDocs.find(d=>d.name===nm);docs.push({name:nm,done:ex?ex.done:false});}
   });
-  const s={
-    '신청시작일':document.getElementById('sf-start').value,
-    '신청마감일':end,
-    '지원사업명':name,
-    '사업자명':document.getElementById('sf-biz').value.trim(),
-    '주관단체':document.getElementById('sf-org').value.trim(),
-    '지원쇼핑몰':document.getElementById('sf-mall').value.trim(),
-    '지원사항':document.getElementById('sf-benefit').value.trim(),
-    '지원상품':document.getElementById('sf-product').value.trim(),
-    '대행여부':document.getElementById('sf-agency').value,
-    '담당자명':document.getElementById('sf-manager').value.trim(),
-    '필요서류':docs,
-    '비고':document.getElementById('sf-memo').value.trim(),
-  };
+  const s={'신청시작일':document.getElementById('sf-start').value,'신청마감일':end,'지원사업명':name,'사업자명':document.getElementById('sf-biz').value.trim(),'주관단체':document.getElementById('sf-org').value.trim(),'지원쇼핑몰':document.getElementById('sf-mall').value.trim(),'지원사항':document.getElementById('sf-benefit').value.trim(),'지원상품':document.getElementById('sf-product').value.trim(),'대행여부':document.getElementById('sf-agency').value,'담당자명':document.getElementById('sf-manager').value.trim(),'필요서류':docs,'비고':document.getElementById('sf-memo').value.trim()};
   closeSModal();setSyncStatus('loading','저장 중...');
   try{
-    if(editSupRowIndex){
-      s._rowIndex=editSupRowIndex;
-      await gasPost({action:'updateSupport',support:s,docsOnly:false});
-    } else {
-      await gasPost({action:'addSupport',support:s});
-    }
+    if(editSupRowIndex){s._rowIndex=editSupRowIndex;await gasPost({action:'updateSupport',support:s,docsOnly:false});}
+    else await gasPost({action:'addSupport',support:s});
     await loadAll();
   }catch{setSyncStatus('err','저장 실패');}
 }
-
 async function deleteSup(){
   if(!confirm('이 지원사업을 삭제할까요?'))return;
   closeSModal();setSyncStatus('loading','삭제 중...');
-  try{
-    await gasPost({action:'deleteSupport',rowIndex:editSupRowIndex});
-    await loadAll();
-  }catch{setSyncStatus('err','삭제 실패');}
+  try{await gasPost({action:'deleteSupport',rowIndex:editSupRowIndex});await loadAll();}
+  catch{setSyncStatus('err','삭제 실패');}
 }
 
-// ── 지원사업 필요서류 저장 (상세 팝업) ──
 function openModal(id){
   editId=id||null;
   document.getElementById('mtitle').textContent=id?'행사 수정':'행사 등록';
@@ -923,10 +686,8 @@ function openModal(id){
   document.getElementById('fp').innerHTML=plats.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
   if(id){
     const e=evs.find(v=>String(v.id)===String(id));
-    document.getElementById('fn').value=e.name;
-    document.getElementById('fp').value=e.plat;
-    document.getElementById('fst').value=e.start;
-    document.getElementById('fen').value=e.end;
+    document.getElementById('fn').value=e.name;document.getElementById('fp').value=e.plat;
+    document.getElementById('fst').value=e.start;document.getElementById('fen').value=e.end;
     document.getElementById('fm').value=e.memo||'';
     e.products.forEach(p=>addProd(p.name,p.orig,p.sale));
   } else {
@@ -943,17 +704,13 @@ function addProd(name='',orig='',sale=''){
   document.getElementById('prows').appendChild(d);
 }
 async function saveEv(){
-  const name=document.getElementById('fn').value.trim();
-  const plat=document.getElementById('fp').value;
-  const start=document.getElementById('fst').value;
-  const end=document.getElementById('fen').value;
+  const name=document.getElementById('fn').value.trim(),plat=document.getElementById('fp').value;
+  const start=document.getElementById('fst').value,end=document.getElementById('fen').value;
   const memo=document.getElementById('fm').value.trim();
   if(!name||!start||!end){alert('행사명, 시작일, 종료일을 입력해주세요.');return;}
   const products=[];
   document.querySelectorAll('#prows .pr').forEach(r=>{
-    const nm=r.querySelector('.pn').value.trim();
-    const or=Number(r.querySelector('.po').value)||0;
-    const sl=Number(r.querySelector('.ps').value)||0;
+    const nm=r.querySelector('.pn').value.trim(),or=Number(r.querySelector('.po').value)||0,sl=Number(r.querySelector('.ps').value)||0;
     if(nm)products.push({name:nm,orig:or,sale:sl});
   });
   const ev={name,plat,start,end,products,memo};
@@ -971,26 +728,22 @@ async function delEv(){
   catch{setSyncStatus('err','삭제 실패');}
 }
 
-// ── 플랫폼 관리 ──
 function openPlatModal(){renderPlatList();document.getElementById('plat-save-msg').textContent='';document.getElementById('pmbg').classList.add('open');}
 function closePlatModal(){document.getElementById('pmbg').classList.remove('open');}
 function renderPlatList(){
   document.getElementById('plat-list').innerHTML=plats.map((p,i)=>`
-    <div class="plat-item">
-      <span class="pi-idx">${i+1}</span>
-      <input type="text" value="${p.name}" oninput="plats[${i}].name=this.value;updatePreview(${i})">
-      <input type="color" value="${p.bg}" oninput="plats[${i}].bg=this.value;updatePreview(${i})">
-      <input type="color" value="${p.tc}" oninput="plats[${i}].tc=this.value;updatePreview(${i})">
-      <span class="pi-preview" id="prev-${i}" style="background:${p.bg};color:${p.tc}">${p.name.slice(0,4)}</span>
-      <button class="pi-del" onclick="removePlatRow(${i})">×</button>
-    </div>`).join('');
+    <div class="plat-item"><span class="pi-idx">${i+1}</span>
+    <input type="text" value="${p.name}" oninput="plats[${i}].name=this.value;updatePreview(${i})">
+    <input type="color" value="${p.bg}" oninput="plats[${i}].bg=this.value;updatePreview(${i})">
+    <input type="color" value="${p.tc}" oninput="plats[${i}].tc=this.value;updatePreview(${i})">
+    <span class="pi-preview" id="prev-${i}" style="background:${p.bg};color:${p.tc}">${p.name.slice(0,4)}</span>
+    <button class="pi-del" onclick="removePlatRow(${i})">×</button></div>`).join('');
 }
 function updatePreview(i){const el=document.getElementById('prev-'+i);if(el){el.style.background=plats[i].bg;el.style.color=plats[i].tc;el.textContent=plats[i].name.slice(0,4);}}
 function addPlatRow(){
   const name=document.getElementById('new-plat-name').value.trim();
   if(!name){alert('플랫폼명을 입력해주세요.');return;}
-  const bg=document.getElementById('new-plat-bg').value;
-  const tc=document.getElementById('new-plat-tc').value;
+  const bg=document.getElementById('new-plat-bg').value,tc=document.getElementById('new-plat-tc').value;
   plats.push({id:'plat_'+Date.now(),name,bg,tc});
   document.getElementById('new-plat-name').value='';
   renderPlatList();
