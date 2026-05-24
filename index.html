@@ -67,6 +67,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .day-cell:last-child{border-right:none}
 .day-cell.other{background:#fafafa}
 .day-cell.sun .dn{color:#E24B4A}
+.day-cell.sat .dn{color:#E24B4A}
+.holiday-badge{display:inline-block;font-size:10px;font-weight:600;color:#fff;background:#E24B4A;border-radius:4px;padding:1px 5px;margin-left:2px;vertical-align:middle;white-space:nowrap}
 .dn{font-size:12px;color:#999;display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%}
 .day-cell.today .dn{background:#534AB7;color:#fff;font-weight:600}
 .bars-layer{position:absolute;top:0;left:0;right:0;pointer-events:none;overflow:hidden}
@@ -359,6 +361,32 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 </div>
 
 <script>
+// ── 한국 공휴일 ──
+const HOLIDAYS={
+  '01-01':'신정','03-01':'삼일절','05-05':'어린이날','06-06':'현충일',
+  '08-15':'광복절','10-03':'개천절','10-09':'한글날','12-25':'크리스마스',
+  // 2025
+  '2025-01-28':'설날연휴','2025-01-29':'설날','2025-01-30':'설날연휴',
+  '2025-03-03':'대체휴무일','2025-05-06':'대체휴무일',
+  '2025-06-03':'대체휴무일',
+  '2025-10-05':'추석연휴','2025-10-06':'추석연휴','2025-10-07':'추석',
+  '2025-10-08':'추석연휴',
+  // 2026
+  '2026-01-28':'설날연휴','2026-01-29':'설날','2026-01-30':'설날연휴',
+  '2026-02-16':'대체휴무일',
+  '2026-05-06':'대체휴무일',
+  '2026-05-25':'부처님오신날',
+  '2026-06-04':'대체휴무일',
+  '2026-09-23':'추석연휴','2026-09-24':'추석','2026-09-25':'추석연휴',
+  '2026-10-05':'대체휴무일',
+};
+
+function getHoliday(dateStr){
+  if(HOLIDAYS[dateStr]) return HOLIDAYS[dateStr];
+  const mmdd=dateStr.slice(5);
+  return HOLIDAYS[mmdd]||null;
+}
+
 const GAS='https://script.google.com/macros/s/AKfycbxAW-hsytkEi11EDac-oHZV5_KEVIwpMnI7tpDd4uPyjbHVq1MGR37RctU8cMxcoiYMOA/exec';
 const DEFAULT_PLATS=[
   {id:'naver',name:'네이버 스마트스토어',bg:'#E6F1FB',tc:'#0C447C'},
@@ -496,7 +524,15 @@ function buildCal(Y,M,evList,type){
     html+=`<div class="week-wrap" style="min-height:${rowH}px"><div class="week-cells" style="min-height:${rowH}px">`;
     week.forEach((c,ci)=>{
       const s=dstr(c.y,c.m,c.d);
-      html+=`<div class="day-cell${c.other?' other':''}${s===t?' today':''}${ci===0?' sun':''}" style="min-height:${rowH}px"><div class="dn">${c.d}</div></div>`;
+      const isSun=ci===0, isSat=ci===6;
+      const holiday=getHoliday(s);
+      const isRed=isSun||isSat||!!holiday;
+      html+=`<div class="day-cell${c.other?' other':''}${s===t?' today':''}${isSun?' sun':''}${isSat?' sat':''}" style="min-height:${rowH}px">
+        <div style="display:flex;align-items:center;gap:3px;flex-wrap:wrap">
+          <div class="dn" style="${isRed&&!isSun&&!isSat?'color:#E24B4A':''}"> ${c.d}</div>
+          ${holiday?`<span class="holiday-badge">${holiday}</span>`:''}
+        </div>
+      </div>`;
     });
     html+=`</div><div class="bars-layer" style="height:${rowH}px">`;
 
