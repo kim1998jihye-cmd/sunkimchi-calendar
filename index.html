@@ -480,10 +480,16 @@ function buildCal(Y,M,evList,type){
       if(e.start<wS)sc=0;if(e.end>wE)ec=6;
       sc=Math.max(0,sc);ec=Math.min(6,ec);
       let slot=0;
+      // 같은 슬롯에서 열(column) 범위가 겹치는지 확인
       while(placed.some(p=>p.slot===slot&&!(p.ec<sc||p.sc>ec)))slot++;
       placed.push({e,sc,ec,slot});
     });
-    const maxSlot=placed.length?Math.max(...placed.map(p=>p.slot)):-1;
+    // 실제 각 셀별로 최대 슬롯 수 계산 (셀마다 다를 수 있음)
+    const slotPerCell=Array(7).fill(-1);
+    placed.forEach(({sc,ec,slot})=>{
+      for(let ci=sc;ci<=ec;ci++) slotPerCell[ci]=Math.max(slotPerCell[ci],slot);
+    });
+    const maxSlot=Math.max(...slotPerCell);
     // 핵심: 날짜숫자 28px + 슬롯 수 × 32px + 여백 8px
     const rowH=Math.max(80,28+(maxSlot+1)*32+8);
     // week-wrap, week-cells, day-cell 모두 동일한 height 적용
