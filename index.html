@@ -181,7 +181,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .plat-head span{font-size:11px;color:#bbb}
 .saving-msg{font-size:12px;color:#888;margin-top:8px;text-align:center}
 @media(max-width:700px){body{padding:0.75rem}.metrics{grid-template-columns:repeat(2,1fr)}.spop-grid{grid-template-columns:1fr}.support-tbl{font-size:12px}}
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+  .btn-upload-excel{font-size:11px;padding:4px 10px;border:1px solid #534AB7;border-radius:6px;color:#534AB7;background:#EEEDFE;cursor:pointer;white-space:nowrap;font-weight:500;display:inline-flex;align-items:center;gap:4px}
+.btn-upload-excel:hover{background:#DDD9FD}
 </style>
+  
 </head>
 <body>
 <div class="container">
@@ -288,13 +292,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div><label>시작일</label><input type="date" id="fst"></div>
     <div><label>종료일</label><input type="date" id="fen"></div>
   </div>
-  <div class="frow"><label>행사 상품</label>
-    <div class="pw">
-      <div class="ph"><span>상품명</span><span>정가</span><span>행사가</span><span></span></div>
-      <div id="prows"></div>
-      <button class="ap" onclick="addProd()">+ 상품 추가</button>
+<div class="frow"><label>행사 상품</label>
+  <div class="pw">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <div class="ph" style="margin-bottom:0;flex:1"><span>상품명</span><span>정가</span><span>행사가</span><span></span></div>
+      <label class="btn-upload-excel" title="엑셀 파일로 일괄 업로드 (상품명·정가·행사가 열 순서)">
+        📥 엑셀 업로드
+        <input type="file" id="prod-excel-input" accept=".xlsx,.xls,.csv" style="display:none" onchange="uploadProdExcel(this)">
+      </label>
     </div>
+    <div id="prows"></div>
+    <button class="ap" onclick="addProd()">+ 상품 추가</button>
+    <div id="excel-upload-msg" style="font-size:11px;color:#888;margin-top:5px;display:none"></div>
   </div>
+</div>
+  
   <div class="frow"><label>메모</label><textarea id="fm" placeholder="특이사항, 담당자 등"></textarea></div>
   <div class="mbtns">
     <button class="bdl" id="bdl" style="display:none" onclick="delEv()">삭제</button>
@@ -743,6 +755,43 @@ function addProd(name='',orig='',sale=''){
   d.innerHTML=`<input type="text" placeholder="상품명" value="${name}" class="pn"><input type="number" placeholder="정가" value="${orig||''}" class="po"><input type="number" placeholder="행사가" value="${sale||''}" class="ps"><button style="background:none;border:none;cursor:pointer;color:#E24B4A;font-size:16px;line-height:1;padding:0" onclick="this.parentNode.remove()">×</button>`;
   document.getElementById('prows').appendChild(d);
 }
+
+  function uploadProdExcel(input){
+  const file=input.files[0];if(!file)return;
+  const msg=document.getElementById('excel-upload-msg');
+  msg.style.display='block';msg.textContent='📂 파일 읽는 중...';
+  const reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      const wb=XLSX.read(e.target.result,{type:'array'});
+      const ws=wb.Sheets[wb.SheetNames[0]];
+      const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
+      // 헤더 행 자동 감지: 첫 행이 텍스트면 스킵
+      let start=0;
+      if(rows.length>0&&typeof rows[0][0]==='string'&&isNaN(Number(rows[0][0]))){
+        // 헤더처럼 보이면 스킵
+        const h=String(rows[0][0]).toLowerCase();
+        if(h.includes('상품')||h.includes('name')||h.includes('품명'))start=1;
+      }
+      const dataRows=rows.slice(start).filter(r=>r[0]&&String(r[0]).trim());
+      if(!dataRows.length){msg.style.color='#A32D2D';msg.textContent='❌ 상품 데이터를 찾을 수 없어요. A열=상품명, B열=정가, C열=행사가 형식인지 확인해주세요.';input.value='';return;}
+      document.getElementById('prows').innerHTML='';
+      dataRows.forEach(r=>{
+        const nm=String(r[0]||'').trim();
+        const orig=Number(String(r[1]||'').replace(/[^0-9.]/g,''))||0;
+        const sale=Number(String(r[2]||'').replace(/[^0-9.]/g,''))||0;
+        if(nm)addProd(nm,orig,sale);
+      });
+      msg.style.color='#27500A';msg.textContent=`✅ ${dataRows.length}개 상품 불러오기 완료`;
+      input.value='';
+      setTimeout(()=>{msg.style.display='none';},3000);
+    }catch(err){
+      msg.style.color='#A32D2D';msg.textContent='❌ 파일 파싱 실패: '+err.message;input.value='';
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+  
 async function saveEv(){
   const name=document.getElementById('fn').value.trim(),plat=document.getElementById('fp').value;
   const start=document.getElementById('fst').value,end=document.getElementById('fen').value,memo=document.getElementById('fm').value.trim();
