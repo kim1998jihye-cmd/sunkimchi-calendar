@@ -184,6 +184,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
   .btn-upload-excel{font-size:11px;padding:4px 10px;border:1px solid #534AB7;border-radius:6px;color:#534AB7;background:#EEEDFE;cursor:pointer;white-space:nowrap;font-weight:500;display:inline-flex;align-items:center;gap:4px}
 .btn-upload-excel:hover{background:#DDD9FD}
+  .btn-download-template{font-size:11px;padding:4px 10px;border:1px solid #3B6D11;border-radius:6px;color:#3B6D11;background:#EAF3DE;cursor:pointer;white-space:nowrap;font-weight:500}
+.btn-download-template:hover{background:#D5ECC2}
 </style>
   
 </head>
@@ -300,6 +302,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         📥 엑셀 업로드
         <input type="file" id="prod-excel-input" accept=".xlsx,.xls,.csv" style="display:none" onchange="uploadProdExcel(this)">
       </label>
+      <button type="button" class="btn-download-template" onclick="downloadProdTemplate()">📋 양식 다운로드</button>
     </div>
     <div id="prows"></div>
     <button class="ap" onclick="addProd()">+ 상품 추가</button>
@@ -791,6 +794,19 @@ function addProd(name='',orig='',sale=''){
   };
   reader.readAsArrayBuffer(file);
 }
+  function downloadProdTemplate(){
+  const ws=XLSX.utils.aoa_to_sheet([
+    ['상품명','정가','행사가'],
+    ['포기김치 2kg',24500,19900],
+    ['깍두기 1kg',12000,9900],
+    ['총각김치 1kg',13000,10900],
+  ]);
+  ws['!cols']=[{wch:20},{wch:12},{wch:12}];
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,'행사상품');
+  XLSX.writeFile(wb,'행사상품_업로드양식.xlsx');
+}
+  
   
 async function saveEv(){
   const name=document.getElementById('fn').value.trim(),plat=document.getElementById('fp').value;
