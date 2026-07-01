@@ -586,7 +586,7 @@ function buildCal(Y,M,evList,type){
         }
         const dimmed=type==='event'&&srchQ&&!srchIds.has(e.id)?'dimmed':'';
         const onclick=type==='event'?`showPop(event,'${String(e.id).replace(/'/g,"\\'")}')`:  `showSpop(event,'${String(e.id).replace(/'/g,"\\'")}')`;
-        const pt=type==='event'&&e.products?e.products.map(p=>p.name+' '+fmt(p.sale)).join(' · '):'';
+        const pt=type==='event'?(e.products&&e.products.length?e.products.map(p=>p.name+' '+fmt(p.sale)).join(' · '):(e.coupons&&e.coupons.length?'🏷 '+e.coupons.map(c=>couponLabel(c)).join(' · '):'')):'';
         const dlBar=type==='support'&&isEnd&&!e._expired?`<span style="position:absolute;right:0;top:0;bottom:0;width:5px;background:rgba(0,0,0,0.2);border-radius:0 ${rR} ${rR} 0"></span>`:'';
         html+=`<div class="ebar ${dimmed}" style="left:calc(${L}% + 1px);width:calc(${W}% - 3px);height:${BAR_H}px;border-radius:${rL} ${rR} ${rR} ${rL};background:${bg};color:${tc};position:absolute" onclick="${onclick}">
           <span class="en">${label}${type==='support'&&isEnd&&!e._expired?' ⚠':''}${type==='support'&&e._done?' ✓':''}</span>
